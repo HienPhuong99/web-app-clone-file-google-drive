@@ -37,7 +37,10 @@ Zapier, Cloudwards, Toolradar, Peony… (so sánh Dropbox/OneDrive/Proton/pCloud
 ## Ghi chú kỹ thuật
 Dữ liệu: SQLite (`data/drive.db`) + blob trên đĩa (`data/blobs`). Mỗi lần upload sinh một `version`. Chưa có CSRF token (dựa vào cookie `SameSite=Lax` + API JSON); nên đặt sau HTTPS và thêm cờ `Secure` cho cookie khi triển khai thật.
 
-## Deploy lên Google Cloud Run
+## Deploy miễn phí bằng Google Apps Script
+Xem [apps-script/README.md](apps-script/README.md) – không cần billing, link `script.google.com/…/exec`.
+
+## Deploy lên Google Cloud Run (cần billing)
 ```bash
 gcloud auth login && gcloud config set project <PROJECT_ID>
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
