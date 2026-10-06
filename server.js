@@ -117,6 +117,7 @@ const publicFile = (f) => ({
 // ---------- app ----------
 const app = express();
 app.disable('x-powered-by');
+app.set('trust proxy', 1); // behind Cloud Run / any HTTPS proxy: correct req.ip and req.secure
 app.use(express.json({ limit: '1mb' }));
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -126,9 +127,9 @@ app.use((req, res, next) => {
 
 // auth
 const SESSION_MS = 30 * 864e5;
-const setSession = (res, userId) => {
+const setSession = (req, res, userId) => {
   const token = rid(32); q('INSERT INTO sessions VALUES(?,?,?)').run(token, userId, now() + SESSION_MS);
-  res.setHeader('Set-Cookie', `sid=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_MS / 1000}`);
+  res.setHeader('Set-Cookie', `sid=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_MS / 1000}${req.secure ? '; Secure' : ''}`);
 };
 function auth(req, res, next) {
   const sid = parseCookies(req.headers.cookie).sid;
@@ -152,7 +153,7 @@ app.post('/api/register', (req, res) => {
   if (q('SELECT 1 FROM users WHERE email=?').get(email)) throw httpErr(409, 'Email already registered');
   const salt = rid(16);
   const { lastInsertRowid } = q('INSERT INTO users(email,name,pass_hash,salt,quota,created) VALUES(?,?,?,?,?,?)').run(email, name.slice(0, 80), hashPw(pw, salt), salt, DEFAULT_QUOTA, now());
-  setSession(res, Number(lastInsertRowid));
+  setSession(req, res, Number(lastInsertRowid));
   res.json({ ok: true });
 });
 app.post('/api/login', (req, res) => {
@@ -160,7 +161,7 @@ app.post('/api/login', (req, res) => {
   throttle(`${req.ip}|${email}`);
   const u = q('SELECT * FROM users WHERE email=?').get(email);
   if (!u || !safeEq(u.pass_hash, hashPw(String(req.body.password || ''), u.salt))) throw httpErr(401, 'Wrong email or password');
-  setSession(res, u.id); res.json({ ok: true });
+  setSession(req, res, u.id); res.json({ ok: true });
 });
 app.post('/api/logout', auth, (req, res) => {
   q('DELETE FROM sessions WHERE token=?').run(req.sid);
@@ -395,7 +396,7 @@ app.post('/api/s/:token/unlock', (req, res) => {
   const { s } = loadShare(req, { needUnlocked: false });
   throttle(`${req.ip}|share|${s.token}`);
   if (s.pass_hash && !safeEq(s.pass_hash, hashPw(String(req.body.password || ''), s.pass_salt))) throw httpErr(401, 'Wrong password');
-  res.setHeader('Set-Cookie', `sh_${s.token}=${unlockSig(s)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400`); res.json({ ok: true });
+  res.setHeader('Set-Cookie', `sh_${s.token}=${unlockSig(s)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400${req.secure ? '; Secure' : ''}`); res.json({ ok: true });
 });
 app.get('/api/s/:token/list', (req, res) => {
   const { root } = loadShare(req); const dir = shareTarget(req, root, req.query.folder);

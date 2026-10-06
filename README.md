@@ -36,3 +36,14 @@ Zapier, Cloudwards, Toolradar, Peony… (so sánh Dropbox/OneDrive/Proton/pCloud
 
 ## Ghi chú kỹ thuật
 Dữ liệu: SQLite (`data/drive.db`) + blob trên đĩa (`data/blobs`). Mỗi lần upload sinh một `version`. Chưa có CSRF token (dựa vào cookie `SameSite=Lax` + API JSON); nên đặt sau HTTPS và thêm cờ `Secure` cho cookie khi triển khai thật.
+
+## Deploy lên Google Cloud Run
+```bash
+gcloud auth login && gcloud config set project <PROJECT_ID>
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+gcloud run deploy mini-drive --source . --region asia-southeast1 \
+  --allow-unauthenticated --max-instances 1 --memory 512Mi
+```
+Lệnh in ra link dạng `https://mini-drive-xxxx.asia-southeast1.run.app`.
+
+⚠️ Cloud Run có ổ đĩa tạm: **dữ liệu (SQLite + tệp) mất khi instance khởi động lại**, và `--max-instances 1` là bắt buộc (SQLite không chạy đa instance). Đủ để demo/test. Muốn lưu lâu dài: chạy trên Compute Engine VM (e2-micro) với persistent disk, hoặc mount bucket GCS vào `/data` cho phần tệp và chuyển DB sang Cloud SQL.
