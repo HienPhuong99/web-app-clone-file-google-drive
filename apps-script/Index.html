@@ -22,12 +22,28 @@
   .row.ok { border-color:var(--ok); } .row.err { border-color:var(--err); color:var(--err); }
   .row a { color:var(--accent); font-weight:600; }
   details { margin-top:4px; font-size:13px; color:var(--muted); }
+  .guide { margin:-8px 0 8px; font-size:14px; } .guide summary { color:var(--accent); font-weight:600; cursor:pointer; }
+  .guide ol, .guide ul { margin:6px 0 10px; padding-left:20px; }
 </style>
 </head>
 <body>
 <main>
   <h1>Drive Clone</h1>
   <p id="who">Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.</p>
+  <details class="guide">
+    <summary>Hướng dẫn sử dụng</summary>
+    <ol>
+      <li>Dán link tệp/thư mục được chia sẻ (mỗi dòng một link).</li>
+      <li>Tuỳ chọn: dán link thư mục đích trong Drive của bạn.</li>
+      <li>Bấm <b>Clone</b>, chờ đến khi hiện ✅ rồi bấm vào tên để mở bản copy.</li>
+    </ol>
+    <b>Khi nào nên dùng app?</b>
+    <ul>
+      <li>Chỉ copy 1 tệp hoặc vài tệp lẻ: không cần app, mở link → <b>⋮ → Tạo bản sao</b>.</li>
+      <li>Copy <b>cả thư mục</b> (kèm thư mục con), vào <b>thư mục đích</b> chọn sẵn, hoặc <b>nhiều link</b> một lần: dùng app.</li>
+    </ul>
+    <b>Lưu ý:</b> bạn phải xem được link, và chủ sở hữu không tắt quyền sao chép. Bản copy tính vào dung lượng Drive của bạn.
+  </details>
   <form id="f">
     <label for="src">Link được chia sẻ</label>
     <textarea id="src" required placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…&#10;(mỗi dòng một link)"></textarea>
