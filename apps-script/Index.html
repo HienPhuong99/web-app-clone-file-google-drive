@@ -4,514 +4,72 @@
 <base target="_blank">
 <meta charset="utf-8">
 <style>
-:root{--bg:#fff;--bg2:#f6f8fc;--fg:#1f1f1f;--muted:#5f6368;--line:#dadce0;--accent:#0b57d0;--accent-bg:#d3e3fd;--hover:#e9eef6;--danger:#d93025;--shadow:0 2px 10px rgba(0,0,0,.18)}
-:root[data-theme=dark]{--bg:#1b1b1f;--bg2:#131316;--fg:#e3e3e3;--muted:#a0a4a8;--line:#3c3f43;--accent:#a8c7fa;--accent-bg:#0842a0;--hover:#2a2c31;--danger:#f28b82;--shadow:0 2px 10px rgba(0,0,0,.6)}
-*{box-sizing:border-box}
-body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg2);color:var(--fg)}
-[hidden]{display:none!important}
-button,input,select{font:inherit;color:inherit}
-button{cursor:pointer}
-input,select{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
-input:focus-visible,button:focus-visible,select:focus-visible,#list:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-a{color:var(--accent)}
-.muted{color:var(--muted)}.pad{padding:8px 14px}.error{color:var(--danger);min-height:1.2em;margin:0}
-.btn{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:8px 18px}
-.btn:hover{background:var(--hover)}.btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-.btn.danger{color:var(--danger)}
-.icon{background:none;border:0;border-radius:50%;width:38px;height:38px;font-size:18px}.icon:hover{background:var(--hover)}
-.card{background:var(--bg);border-radius:16px;padding:32px;box-shadow:var(--shadow);width:min(380px,92vw);display:flex;flex-direction:column;gap:12px}
-.card.wide{width:min(900px,94vw)}
-#auth,.sharepage{min-height:100vh;display:grid;place-items:center;padding:16px}.sharepage{align-content:start;padding-top:6vh}
-#auth h1{margin:0}
-/* layout */
-#app{display:grid;grid-template-columns:250px 1fr;grid-template-rows:64px 1fr;height:100vh}
-header{grid-column:1/3;display:flex;align-items:center;gap:12px;padding:0 16px}
-header .logo{font-size:20px;font-weight:600;width:200px;color:var(--accent)}
-#search{flex:1;max-width:720px;border-radius:24px;background:var(--hover);border-color:transparent;padding:11px 20px}
-#menuBtn{display:none}
-.avatar{width:34px;height:34px;border-radius:50%;border:0;background:var(--accent);color:var(--bg);font-weight:600}
-aside{padding:8px 12px;display:flex;flex-direction:column;gap:12px;overflow:auto}
-.newwrap{position:relative}
-.btn.new{border-radius:16px;padding:16px 22px;font-size:15px;box-shadow:var(--shadow);border:0}
-#nav a{display:block;padding:9px 16px;border-radius:0 20px 20px 0;color:var(--fg);text-decoration:none;margin-left:-12px;padding-left:28px}
-#nav a:hover{background:var(--hover)}#nav a.on{background:var(--accent-bg);font-weight:600}
-.quota{padding:12px 4px;margin-top:auto}.bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:6px}.bar i{display:block;height:100%;background:var(--accent);width:0}
-#main{background:var(--bg);border-radius:16px 0 0 0;margin-right:0;padding:12px 20px;overflow:auto;position:relative;display:flex;flex-direction:column}
-.toolbar{display:flex;align-items:center;gap:8px;min-height:44px;flex-wrap:wrap}.spacer{flex:1}
-.crumbs{font-size:18px;display:flex;flex-wrap:wrap;align-items:center;gap:2px}
-.crumbs a{color:var(--fg);text-decoration:none;padding:4px 10px;border-radius:16px}.crumbs a:hover,.crumbs a.dragover{background:var(--hover)}
-.crumbs span.sep{color:var(--muted)}
-#selbar{display:flex;gap:6px;align-items:center;background:var(--accent-bg);border-radius:24px;padding:4px 12px;margin:6px 0}
-#selbar button{border:0;background:none;border-radius:16px;padding:6px 10px}#selbar button:hover{background:rgba(127,127,127,.2)}
-/* files */
-#list{margin-top:10px;flex:1;outline:none}
-#list.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;align-content:start}
-.item{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--bg2);cursor:default;user-select:none;overflow:hidden}
-.item:hover{background:var(--hover)}.item.sel{background:var(--accent-bg);border-color:var(--accent)}.item.dragover{outline:2px dashed var(--accent)}
-.grid .item .thumb{height:120px;display:grid;place-items:center;font-size:48px;background:var(--bg);overflow:hidden}
-.grid .item .thumb img{width:100%;height:100%;object-fit:cover}
-.grid .item .meta{padding:10px 12px;display:flex;gap:8px;align-items:center}
-.name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
-.star{color:#f4b400}.sub{color:var(--muted);font-size:12px}
-.more{border:0;background:none;border-radius:50%;width:28px;height:28px}.more:hover{background:rgba(127,127,127,.25)}
-#list.rows .item{display:grid;grid-template-columns:36px 1fr 120px 100px 32px;align-items:center;gap:8px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;padding:6px 8px}
-#list.rows .item.sel{background:var(--accent-bg)}
-#list.rows .thumb{font-size:20px;text-align:center}#list.rows .thumb img{display:none}
-#list.rows .meta{display:contents}#list.rows .meta .name{grid-column:2}
-#list.rows .sub.d{grid-column:3}#list.rows .sub.s{grid-column:4}#list.rows .more{grid-column:5}
-.empty{margin:auto;text-align:center;color:var(--muted);font-size:16px;padding:40px}
-.empty b{display:block;font-size:44px}
-#drop{position:absolute;inset:8px;border:3px dashed var(--accent);border-radius:16px;background:color-mix(in srgb,var(--bg) 85%,transparent);display:grid;place-items:center;font-size:22px;z-index:20;pointer-events:none}
-/* menus */
-.menu{position:fixed;z-index:50;background:var(--bg);border-radius:8px;box-shadow:var(--shadow);padding:6px 0;min-width:210px;border:1px solid var(--line)}
-.newwrap .menu{position:absolute;top:56px;left:0}
-#userMenu{top:56px;right:12px}
-.menu button{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 16px}.menu button:hover{background:var(--hover)}
-.menu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
-.menu .danger{color:var(--danger)}
-/* dialog */
-dialog{border:0;border-radius:16px;padding:24px;background:var(--bg);color:var(--fg);box-shadow:var(--shadow);width:min(520px,94vw);max-height:90vh}
-dialog::backdrop{background:rgba(0,0,0,.45)}
-dialog.big{width:min(1000px,96vw);height:88vh;padding:0}
-dialog.big[open]{display:flex;flex-direction:column}
-dialog h2{margin:0 0 14px;font-size:20px}
-dialog .row{display:flex;gap:8px;align-items:center;margin:10px 0}dialog .row input[type=text],dialog .row input:not([type]),dialog .row input[type=password],dialog .row input[type=datetime-local]{flex:1}
-dialog .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-dialog input[type=text],dialog input:not([type]){width:100%}
-.viewer-head{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line)}
-.viewer-body{flex:1;display:grid;place-items:center;overflow:auto;background:var(--bg2);min-height:0}
-.viewer-body img,.viewer-body video{max-width:100%;max-height:100%}.viewer-body iframe{width:100%;height:100%;border:0;background:#fff}
-.viewer-body pre{margin:0;padding:16px;width:100%;height:100%;overflow:auto;white-space:pre-wrap;word-break:break-word;align-self:start}
-.ver{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}.ver .grow{flex:1}
-.tag{background:var(--accent-bg);border-radius:10px;padding:1px 8px;font-size:12px}
-/* uploads + toast */
-#uploads{position:fixed;right:16px;bottom:16px;width:320px;max-height:50vh;overflow:auto;background:var(--bg);border-radius:12px;box-shadow:var(--shadow);z-index:60;border:1px solid var(--line)}
-#uploads h4{margin:0;padding:10px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
-.up{padding:8px 14px;font-size:13px}.up .bar{margin:4px 0 0}.up.err{color:var(--danger)}
-#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,40px);background:#323232;color:#fff;padding:10px 18px;border-radius:8px;opacity:0;transition:.25s;pointer-events:none;z-index:99}
-#toast.show{opacity:1;transform:translate(-50%,0)}
-.sharelist .item{cursor:pointer}
-@media(max-width:800px){
-  #app{grid-template-columns:1fr}header .logo{display:none}#menuBtn{display:block}
-  aside{position:fixed;z-index:40;top:64px;bottom:0;left:0;width:260px;background:var(--bg);box-shadow:var(--shadow);transform:translateX(-105%);transition:.2s}
-  aside.open{transform:none}#main{border-radius:0;padding:8px 12px}
-  #list.rows .item{grid-template-columns:32px 1fr 28px}#list.rows .sub{display:none}#list.rows .more{grid-column:3}
-}
-
-.thumb img{background:var(--bg)}
-.more-row{text-align:center;padding:16px}
-.loading{opacity:.55;pointer-events:none}
+  :root { --bg:#f6f8fc; --card:#fff; --fg:#1f1f1f; --muted:#5f6368; --line:#dadce0; --accent:#0b57d0; --ok:#188038; --err:#d93025; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#131316; --card:#1e1f22; --fg:#e3e3e3; --muted:#a0a4a8; --line:#3c3f43; --accent:#a8c7fa; --ok:#81c995; --err:#f28b82; } }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; display:grid; place-items:start center; padding:6vh 16px; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { width:min(620px,100%); background:var(--card); border-radius:16px; padding:28px; box-shadow:0 2px 12px rgba(0,0,0,.12); }
+  h1 { margin:0 0 4px; font-size:22px; } p { margin:0 0 18px; color:var(--muted); }
+  label { display:block; font-weight:600; margin:14px 0 6px; }
+  textarea, input { width:100%; font:inherit; color:inherit; background:transparent; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  textarea { min-height:90px; resize:vertical; }
+  textarea:focus, input:focus, button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  small { color:var(--muted); }
+  button { margin-top:18px; width:100%; padding:12px; border:0; border-radius:24px; background:var(--accent); color:var(--card); font:inherit; font-weight:600; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:default; }
+  #log { margin-top:18px; display:flex; flex-direction:column; gap:8px; }
+  .row { border:1px solid var(--line); border-radius:10px; padding:10px 12px; word-break:break-word; }
+  .row.ok { border-color:var(--ok); } .row.err { border-color:var(--err); color:var(--err); }
+  .row a { color:var(--accent); font-weight:600; }
+  details { margin-top:4px; font-size:13px; color:var(--muted); }
 </style>
 </head>
 <body>
-<div id="app">
-  <header>
-    <button class="icon" id="menuBtn" aria-label="Menu">☰</button>
-    <div class="logo">▲ Mini Drive</div>
-    <input id="search" type="search" placeholder="Tìm theo tên hoặc nội dung…" aria-label="Tìm kiếm">
-    <button class="icon" id="themeBtn" aria-label="Đổi giao diện" title="Sáng/Tối">◐</button>
-    <button class="avatar" id="userBtn" aria-label="Tài khoản"></button>
-  </header>
-  <aside id="side">
-    <div class="newwrap">
-      <button class="btn new" id="newBtn">＋ Mới</button>
-      <div class="menu" id="newMenu" hidden>
-        <button data-act="newFolder">📁 Thư mục mới</button>
-        <button data-act="uploadFile">⬆ Tải tệp lên</button>
-        <button data-act="uploadFolder">🗂 Tải thư mục lên</button>
-      </div>
-    </div>
-    <nav id="nav">
-      <a href="#" target="_self" data-view="drive">🗄 Drive của tôi</a>
-      <a href="#" target="_self" data-view="shared">👥 Được chia sẻ với tôi</a>
-      <a href="#" target="_self" data-view="recent">🕑 Gần đây</a>
-      <a href="#" target="_self" data-view="starred">⭐ Có gắn dấu sao</a>
-      <a href="#" target="_self" data-view="trash">🗑 Thùng rác</a>
-    </nav>
-    <div class="quota"><div class="bar"><i id="quotaBar"></i></div><small id="quotaText"></small></div>
-  </aside>
-  <section id="main">
-    <div class="toolbar">
-      <div id="crumbs" class="crumbs"></div>
-      <div class="spacer"></div>
-      <button class="btn" id="emptyTrash" hidden>Dọn sạch thùng rác</button>
-      <select id="sort" aria-label="Sắp xếp">
-        <option value="name">Tên A→Z</option><option value="name-desc">Tên Z→A</option>
-        <option value="updated">Mới sửa</option><option value="size">Dung lượng</option>
-      </select>
-      <button class="icon" id="viewBtn" aria-label="Chế độ xem" title="Lưới/Danh sách">▦</button>
-    </div>
-    <div id="selbar" hidden></div>
-    <div id="list" tabindex="0"></div>
-    <div id="more" class="more-row" hidden><button class="btn" id="moreBtn">Tải thêm</button></div>
-    <div id="empty" class="empty" hidden></div>
-    <div id="drop" hidden>Thả tệp hoặc thư mục để tải lên</div>
-  </section>
-</div>
-<div class="menu ctx" id="ctx" hidden></div>
-<div class="menu" id="userMenu" hidden><div class="muted pad" id="userInfo"></div></div>
-<input type="file" id="fileIn" multiple hidden><input type="file" id="dirIn" webkitdirectory hidden><input type="file" id="verIn" hidden>
-<div id="uploads" hidden></div>
-<div id="toast" role="status"></div>
-<dialog id="dlg"></dialog>
+<main>
+  <h1>Drive Clone</h1>
+  <p id="who">Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.</p>
+  <form id="f">
+    <label for="src">Link được chia sẻ</label>
+    <textarea id="src" required placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…&#10;(mỗi dòng một link)"></textarea>
+    <label for="dst">Link thư mục đích <small>(tuỳ chọn – để trống sẽ lưu vào My Drive)</small></label>
+    <input id="dst" placeholder="https://drive.google.com/drive/folders/…">
+    <button id="go">Clone</button>
+  </form>
+  <div id="log" aria-live="polite"></div>
+</main>
 <script>
 'use strict';
-const $ = (s, r = document) => r.querySelector(s);
+const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const fmtSize = (n) => { if (n == null) return '—'; const u = ['B', 'KB', 'MB', 'GB', 'TB']; let i = 0; while (n >= 1024 && i < 4) { n /= 1024; i++; } return `${n < 10 && i ? n.toFixed(1) : Math.round(n)} ${u[i]}`; };
-const fmtDate = (t) => t ? new Date(t).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
-const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* ignore */ } } };
-const FOLDER = 'application/vnd.google-apps.folder';
+const run = (fn, ...a) => new Promise((ok, fail) => google.script.run.withSuccessHandler(ok).withFailureHandler((e) => fail(new Error(e && e.message ? e.message : String(e))))[fn](...a));
 
-// google.script.run as promises
-const run = (fn, ...args) => new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler((e) => rej(new Error(e && e.message ? e.message : String(e))))[fn](...args));
-let toastT;
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3500); }
-const guard = (fn) => async (...a) => { try { return await fn(...a); } catch (e) { toast(e.message); } };
+run('me').then((email) => { $('#who').textContent = `Copy tệp hoặc thư mục được chia sẻ vào Google Drive của ${email}.`; })
+  .catch((e) => { $('#who').textContent = e.message; $('#go').disabled = true; });
 
-const state = { me: null, view: 'drive', folder: null, search: '', files: [], crumbs: [], next: null, sel: new Set(), mode: store.get('mode') || 'grid', sort: store.get('sort') || 'name', anchor: null, seq: 0 };
-
-function icon(f) {
-  if (f.isFolder) return '📁';
-  const m = f.mime || '';
-  if (m === 'application/vnd.google-apps.document') return '📘'; if (m === 'application/vnd.google-apps.spreadsheet') return '📗';
-  if (m === 'application/vnd.google-apps.presentation') return '📙'; if (m.startsWith('image/')) return '🖼'; if (m.startsWith('video/')) return '🎬';
-  if (m.startsWith('audio/')) return '🎵'; if (m === 'application/pdf') return '📕'; if (/zip|rar|7z|tar|gzip/.test(m)) return '🗜';
-  if (m.startsWith('text/')) return '📄'; return '📎';
-}
-const isGoogleType = (f) => (f.mime || '').startsWith('application/vnd.google-apps.');
-
-// ---------- boot / navigation ----------
-async function boot() {
-  try { state.me = await run('info'); } catch (e) { $('#main').innerHTML = `<div class="empty"><b>⚠️</b>${esc(e.message)}</div>`; return; }
-  $('#userBtn').textContent = (state.me.name || state.me.email || '?')[0].toUpperCase();
-  $('#userInfo').textContent = `${state.me.name} · ${state.me.email}`;
-  $('#sort').value = state.sort; quota(); go('drive', null);
-}
-function quota() {
-  const { used, limit } = state.me;
-  $('#quotaBar').style.width = limit ? `${Math.min(100, (used / limit) * 100)}%` : '0';
-  $('#quotaText').textContent = limit ? `Đã dùng ${fmtSize(used)} / ${fmtSize(limit)}` : `Đã dùng ${fmtSize(used)}`;
-}
-function go(view, folder) { state.view = view; state.folder = folder; state.search = ''; $('#search').value = ''; load(); }
-$('#nav').onclick = (e) => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); $('#side').classList.remove('open'); go(a.dataset.view, null); };
-
-const load = guard(async function load(append = false) {
-  const seq = ++state.seq; $('#main').classList.add('loading');
-  try {
-    const r = await run('list', { view: state.view, folder: state.folder, search: state.search, sort: state.sort, pageToken: append ? state.next : null });
-    if (seq !== state.seq) return; // a newer request superseded this one
-    state.files = append ? state.files.concat(r.files) : r.files; state.next = r.next;
-    if (!append) { state.crumbs = r.crumbs; state.sel.clear(); }
-    render();
-  } finally { if (seq === state.seq) $('#main').classList.remove('loading'); }
-});
-$('#moreBtn').onclick = () => load(true);
-
-// ---------- render ----------
-const TITLES = { shared: 'Được chia sẻ với tôi', recent: 'Gần đây', starred: 'Có gắn dấu sao', trash: 'Thùng rác' };
-function render() {
-  document.querySelectorAll('#nav a').forEach((a) => a.classList.toggle('on', a.dataset.view === state.view && !state.search));
-  const c = $('#crumbs');
-  if (state.search) c.innerHTML = `<span>Kết quả cho “${esc(state.search)}”</span>`;
-  else if (state.view === 'drive') c.innerHTML = `<a href="#" target="_self" data-go="" data-drop="">Drive của tôi</a>` + state.crumbs.map((x) => `<span class="sep">›</span><a href="#" target="_self" data-go="${esc(x.id)}" data-drop="${esc(x.id)}">${esc(x.name)}</a>`).join('');
-  else c.innerHTML = `<span>${TITLES[state.view]}</span>`;
-  $('#emptyTrash').hidden = !(state.view === 'trash' && state.files.length);
-  $('#viewBtn').textContent = state.mode === 'grid' ? '☰' : '▦';
-  $('#sort').hidden = !(state.view === 'drive' && !state.search);
-  const L = $('#list'); L.className = state.mode === 'grid' ? 'grid' : 'rows';
-  L.innerHTML = state.files.map((f) => `
-    <div class="item${state.sel.has(f.id) ? ' sel' : ''}" data-id="${esc(f.id)}" draggable="${state.view !== 'trash'}">
-      <div class="thumb">${f.thumb ? `<img loading="lazy" alt="" referrerpolicy="no-referrer" src="${esc(f.thumb)}" onerror="this.replaceWith('${icon(f)}')">` : icon(f)}</div>
-      <div class="meta"><span class="name" title="${esc(f.name)}">${f.starred ? '<span class="star">★</span> ' : ''}${f.shared ? '👥 ' : ''}${esc(f.name)}</span>
-      <span class="sub d">${fmtDate(f.updated)}</span><span class="sub s">${f.isFolder ? '' : fmtSize(f.size)}</span>
-      <button class="more" aria-label="Thêm" data-more>⋮</button></div>
-    </div>`).join('');
-  $('#more').hidden = !state.next;
-  const E = $('#empty'); E.hidden = !!state.files.length; L.hidden = !state.files.length;
-  const msgs = { drive: ['📂', 'Thư mục trống', 'Kéo thả tệp vào đây hoặc bấm “＋ Mới”'], trash: ['🗑', 'Thùng rác trống', 'Google tự xoá vĩnh viễn mục trong thùng rác sau 30 ngày'], starred: ['⭐', 'Chưa có mục gắn sao', ''], recent: ['🕑', 'Chưa có tệp nào', ''], shared: ['👥', 'Chưa ai chia sẻ gì với bạn', ''] };
-  const m = state.search ? ['🔍', 'Không tìm thấy kết quả', ''] : msgs[state.view];
-  E.innerHTML = `<b>${m[0]}</b>${m[1]}<br><small>${m[2]}</small>`;
-  renderSel();
-}
-$('#crumbs').onclick = (e) => { const a = e.target.closest('[data-go]'); if (!a) return; e.preventDefault(); go('drive', a.dataset.go || null); };
-function renderSel() {
-  document.querySelectorAll('.item').forEach((el) => el.classList.toggle('sel', state.sel.has(el.dataset.id)));
-  const bar = $('#selbar'); const n = state.sel.size; bar.hidden = !n; if (!n) return;
-  bar.innerHTML = `<b>${n} đã chọn</b>` + (state.view === 'trash'
-    ? '<button data-a="restore">↩ Khôi phục</button><button data-a="purge">❌ Xoá vĩnh viễn</button>'
-    : '<button data-a="download">⬇ Tải xuống</button><button data-a="star">⭐ Gắn sao</button><button data-a="move">📂 Di chuyển</button><button data-a="trash">🗑 Xoá</button>') + '<button data-a="clear">✕</button>';
-}
-const selFiles = () => state.files.filter((f) => state.sel.has(f.id));
-const byId = (id) => state.files.find((f) => f.id === id);
-$('#selbar').onclick = (e) => { const a = e.target.dataset.a; if (!a) return; if (a === 'clear') { state.sel.clear(); return renderSel(); } bulk(a, selFiles()); };
-
-// ---------- selection ----------
-$('#list').addEventListener('click', (e) => {
-  const el = e.target.closest('.item'); if (!el) return; const id = el.dataset.id;
-  if (e.target.closest('[data-more]')) { e.stopPropagation(); if (!state.sel.has(id)) { state.sel = new Set([id]); renderSel(); } return openCtx(e.clientX, e.clientY, [byId(id)]); }
-  if (e.shiftKey && state.anchor != null) {
-    const ids = state.files.map((f) => f.id); const [a, b] = [ids.indexOf(state.anchor), ids.indexOf(id)].sort((x, y) => x - y);
-    state.sel = new Set(ids.slice(a, b + 1));
-  } else if (e.ctrlKey || e.metaKey) { state.sel.has(id) ? state.sel.delete(id) : state.sel.add(id); state.anchor = id; }
-  else { state.sel = new Set([id]); state.anchor = id; }
-  renderSel();
-});
-$('#list').addEventListener('dblclick', (e) => { const el = e.target.closest('.item'); if (el && !e.target.closest('[data-more]')) open(byId(el.dataset.id)); });
-$('#list').addEventListener('contextmenu', (e) => {
-  const el = e.target.closest('.item'); if (!el) return; e.preventDefault();
-  if (!state.sel.has(el.dataset.id)) { state.sel = new Set([el.dataset.id]); renderSel(); }
-  openCtx(e.clientX, e.clientY, selFiles());
-});
-$('#main').addEventListener('click', (e) => { if (['main', 'list', 'empty'].includes(e.target.id)) { state.sel.clear(); renderSel(); } });
-$('#list').addEventListener('keydown', (e) => {
-  const sel = selFiles();
-  if (e.key === 'Enter' && sel.length === 1) open(sel[0]);
-  else if (e.key === 'Delete' && sel.length) bulk(state.view === 'trash' ? 'purge' : 'trash', sel);
-  else if (e.key === 'F2' && sel.length === 1) rename(sel[0]);
-  else if (e.key === 'a' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); state.sel = new Set(state.files.map((f) => f.id)); renderSel(); }
-  else if (e.key === 'Escape') { state.sel.clear(); renderSel(); }
-});
-function open(f) {
-  if (!f || state.view === 'trash') return;
-  if (f.isFolder) return go('drive', f.id);
-  preview(f);
+function row() { const d = document.createElement('div'); d.className = 'row'; $('#log').prepend(d); return d; }
+function show(el, link, job) {
+  const failed = job.failed.length ? `<details><summary>${job.failed.length} tệp lỗi</summary>${job.failed.map(esc).join('<br>')}</details>` : '';
+  el.innerHTML = `${job.done ? '✅' : '⏳'} <a href="${esc(job.url)}">${esc(job.name)}</a> — ${job.done ? 'xong' : 'đang copy'}, ${job.copied} tệp${failed}<br><small>${esc(link)}</small>`;
 }
 
-// ---------- context menu ----------
-function openCtx(x, y, files) {
-  const m = $('#ctx'); const one = files.length === 1 ? files[0] : null;
-  const B = (a, t, cls = '') => `<button data-a="${a}" class="${cls}">${t}</button>`;
-  m.innerHTML = state.view === 'trash' ? B('restore', '↩ Khôi phục') + B('purge', '❌ Xoá vĩnh viễn', 'danger') : [
-    one && B('open', one.isFolder ? '📂 Mở' : '👁 Xem trước'), one && !one.isFolder && B('drive', '↗ Mở trong Google Drive'),
-    B('download', '⬇ Tải xuống'), one && B('rename', '✏ Đổi tên'), '<hr>', one && one.canShare && B('share', '🔗 Chia sẻ'),
-    B('star', files.every((f) => f.starred) ? '☆ Bỏ dấu sao' : '⭐ Gắn dấu sao'), B('move', '📂 Di chuyển tới…'),
-    one && !one.isFolder && !isGoogleType(one) && one.canEdit && B('version', '⬆ Tải lên phiên bản mới'),
-    '<hr>', B('trash', '🗑 Chuyển vào thùng rác', 'danger')].filter(Boolean).join('');
-  m.hidden = false; const r = m.getBoundingClientRect();
-  m.style.left = `${Math.max(4, Math.min(x, innerWidth - r.width - 8))}px`; m.style.top = `${Math.max(4, Math.min(y, innerHeight - r.height - 8))}px`;
-  m.onclick = (e) => { const a = e.target.dataset.a; if (!a) return; m.hidden = true; bulk(a, files); };
-}
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('#ctx')) $('#ctx').hidden = true;
-  if (!e.target.closest('.newwrap')) $('#newMenu').hidden = true;
-  if (!e.target.closest('#userMenu,#userBtn')) $('#userMenu').hidden = true;
-  if (!e.target.closest('aside,#menuBtn')) $('#side').classList.remove('open');
-});
-$('#userBtn').onclick = () => { $('#userMenu').hidden = !$('#userMenu').hidden; };
-$('#menuBtn').onclick = () => $('#side').classList.toggle('open');
-
-const bulk = guard(async (a, files) => {
-  const one = files[0]; const ids = files.map((f) => f.id);
-  switch (a) {
-    case 'open': return open(one);
-    case 'drive': return window.open(one.link, '_blank', 'noopener');
-    case 'rename': return rename(one);
-    case 'share': return shareDlg(one);
-    case 'move': return moveDlg(files);
-    case 'version': { state.verTarget = one; return $('#verIn').click(); }
-    case 'download': return download(files);
-    case 'star': { await run('star', ids, !files.every((f) => f.starred)); return load(); }
-    case 'trash': { await run('trash', ids); toast(`Đã chuyển ${ids.length} mục vào thùng rác`); return load(); }
-    case 'restore': { await run('restore', ids); toast('Đã khôi phục'); return load(); }
-    case 'purge': { if (!confirm(`Xoá vĩnh viễn ${ids.length} mục? Không thể hoàn tác.`)) return; await run('purge', ids); refreshQuota(); return load(); }
+$('#f').onsubmit = async (e) => {
+  e.preventDefault();
+  const links = $('#src').value.split(/\s+/).filter(Boolean);
+  const dest = $('#dst').value.trim();
+  $('#go').disabled = true;
+  for (const link of links) {
+    const el = row(); el.textContent = `⏳ Đang mở ${link}`;
+    try {
+      let job = await run('cloneStart', link, dest);
+      show(el, link, job);
+      while (!job.done) { job = await run('cloneStep', job); show(el, link, job); }
+      el.classList.add(job.failed.length ? 'err' : 'ok');
+    } catch (err) {
+      el.className = 'row err'; el.innerHTML = `❌ ${esc(err.message)}<br><small>${esc(link)}</small>`;
+    }
   }
-});
-$('#emptyTrash').onclick = guard(async () => { if (confirm('Dọn sạch toàn bộ thùng rác Google Drive? Không thể hoàn tác.')) { await run('emptyTrash'); refreshQuota(); load(); } });
-const refreshQuota = guard(async () => { state.me = await run('info'); quota(); });
-function download(files) {
-  const folders = files.filter((f) => f.isFolder);
-  if (folders.length) toast('Thư mục: mở trong Google Drive để tải dạng zip');
-  files.filter((f) => !f.isFolder).forEach((f, i) => setTimeout(() => {
-    window.open(isGoogleType(f) ? f.link : `https://drive.google.com/uc?export=download&id=${encodeURIComponent(f.id)}`, '_blank', 'noopener');
-  }, i * 400));
-}
-
-// ---------- dialogs ----------
-const dlg = $('#dlg');
-function showDlg(html, { big = false } = {}) { dlg.className = big ? 'big' : ''; dlg.innerHTML = html; if (!dlg.open) dlg.showModal(); return dlg; }
-dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target.dataset.close !== undefined) dlg.close(); });
-dlg.addEventListener('close', () => { dlg.innerHTML = ''; dlg.onclick = null; });
-function ask(title, value = '', ok = 'OK') {
-  return new Promise((res) => {
-    showDlg(`<form method="dialog"><h2>${esc(title)}</h2><input id="pIn" value="${esc(value)}" autocomplete="off"><div class="actions"><button type="button" class="btn" data-close>Huỷ</button><button class="btn primary" value="ok">${esc(ok)}</button></div></form>`);
-    const i = $('#pIn'); i.focus(); i.select();
-    dlg.onclose = () => { dlg.onclose = null; res(dlg.returnValue === 'ok' ? i.value : null); dlg.returnValue = ''; };
-  });
-}
-const rename = guard(async (f) => { const n = await ask('Đổi tên', f.name, 'Lưu'); if (!n || !n.trim() || n === f.name) return; await run('rename', f.id, n); load(); });
-const newFolder = guard(async () => {
-  const n = await ask('Thư mục mới', 'Thư mục chưa có tên', 'Tạo'); if (!n || !n.trim()) return;
-  await run('createFolder', state.folder, n.trim()); load();
-});
-
-function moveDlg(files) {
-  const ids = new Set(files.map((f) => f.id)); let cur = null;
-  const draw = guard(async () => {
-    const r = await run('list', { view: 'drive', folder: cur, sort: 'name' });
-    const path = ['Drive của tôi', ...r.crumbs.map((c) => c.name)].join(' › ');
-    showDlg(`<h2>Di chuyển ${files.length} mục</h2><p class="muted">${esc(path)}</p>
-      <div style="max-height:280px;overflow:auto">${cur ? '<button class="btn" data-up style="margin:2px 0">⬆ Lên trên</button>' : ''}
-      ${r.files.filter((f) => f.isFolder && !ids.has(f.id)).map((f) => `<button class="btn" data-go="${esc(f.id)}" style="display:block;width:100%;text-align:left;border-radius:8px;margin:2px 0">📁 ${esc(f.name)}</button>`).join('') || '<p class="muted">Không có thư mục con</p>'}</div>
-      <div class="actions"><button class="btn" data-close>Huỷ</button><button class="btn primary" data-here>Di chuyển vào đây</button></div>`);
-    dlg.onclick = guard(async (e) => {
-      const t = e.target.closest('button') || e.target;
-      if (t === dlg || t.dataset.close !== undefined) return dlg.close();
-      if (t.dataset.go) { cur = t.dataset.go; return draw(); }
-      if (t.dataset.up !== undefined) { cur = r.crumbs.length > 1 ? r.crumbs[r.crumbs.length - 2].id : null; return draw(); }
-      if (t.dataset.here !== undefined) { dlg.close(); await moveTo(files, cur); }
-    });
-  });
-  draw();
-}
-const moveTo = guard(async (files, target) => { await run('move', files.map((f) => f.id), target); toast('Đã di chuyển'); load(); });
-
-const shareDlg = guard(async (f) => {
-  let s = await run('getShare', f.id);
-  const ROLES = { reader: 'Người xem', commenter: 'Người nhận xét', writer: 'Người chỉnh sửa', owner: 'Chủ sở hữu' };
-  const draw = () => {
-    showDlg(`<h2>Chia sẻ “${esc(f.name)}”</h2>
-      <div class="row"><input id="em" type="email" placeholder="Thêm email người dùng" style="flex:1"><select id="rl"><option value="reader">Xem</option><option value="writer">Chỉnh sửa</option></select><button class="btn primary" id="add">Mời</button></div>
-      <div style="max-height:160px;overflow:auto">${s.people.map((p) => `<div class="ver"><div class="grow">${esc(p.name || p.email)}<br><small class="muted">${esc(p.email || '')}</small></div><span class="tag">${ROLES[p.role] || p.role}</span>${p.role === 'owner' ? '' : `<button class="btn danger" data-rm="${esc(p.id)}">✕</button>`}</div>`).join('')}</div>
-      <h3 style="font-size:15px;margin:18px 0 6px">Quyền truy cập chung</h3>
-      <div class="row"><select id="any" style="flex:1"><option value="">🔒 Hạn chế – chỉ người được thêm</option><option value="reader">🌐 Bất kỳ ai có liên kết – Xem</option><option value="commenter">🌐 Bất kỳ ai có liên kết – Nhận xét</option><option value="writer">🌐 Bất kỳ ai có liên kết – Chỉnh sửa</option></select></div>
-      <div class="row"><input id="lnk" readonly value="${esc(s.link)}"><button class="btn" id="cp">Sao chép</button></div>
-      <div class="actions"><button class="btn primary" data-close>Xong</button></div>`);
-    $('#any').value = s.anyone || '';
-    $('#any').onchange = guard(async (e) => { s = await run('setLinkAccess', f.id, e.target.value || null); toast('Đã cập nhật quyền'); draw(); load(); });
-    $('#add').onclick = guard(async () => { s = await run('addPerson', f.id, $('#em').value, $('#rl').value); toast('Đã gửi lời mời'); draw(); });
-    $('#cp').onclick = async () => { try { await navigator.clipboard.writeText(s.link); toast('Đã sao chép liên kết'); } catch { $('#lnk').select(); document.execCommand('copy'); toast('Đã sao chép liên kết'); } };
-    dlg.querySelectorAll('[data-rm]').forEach((b) => { b.onclick = guard(async () => { s = await run('removePerson', f.id, b.dataset.rm); draw(); }); });
-  };
-  draw();
-});
-
-function preview(f) {
-  const idx = state.files.filter((x) => !x.isFolder); const i = idx.findIndex((x) => x.id === f.id);
-  showDlg(`<div class="viewer-head"><b class="name">${esc(f.name)}</b><span class="sub">${f.size != null ? fmtSize(f.size) : ''}</span>
-    <button class="icon" data-p="-1" ${i < 1 ? 'disabled' : ''} aria-label="Trước">‹</button><button class="icon" data-p="1" ${i >= idx.length - 1 ? 'disabled' : ''} aria-label="Sau">›</button>
-    <a class="icon" style="display:grid;place-items:center;text-decoration:none" href="${esc(f.link)}" aria-label="Mở trong Drive">↗</a><button class="icon" data-close aria-label="Đóng">✕</button></div>
-    <div class="viewer-body"><iframe title="${esc(f.name)}" src="https://drive.google.com/file/d/${encodeURIComponent(f.id)}/preview" allow="autoplay"></iframe></div>`, { big: true });
-  dlg.onclick = (e) => { if (e.target === dlg || e.target.closest('[data-close]')) return dlg.close(); const p = e.target.closest('[data-p]'); if (p && !p.disabled) preview(idx[i + Number(p.dataset.p)]); };
-}
-dlg.addEventListener('keydown', (e) => { if (!dlg.classList.contains('big')) return; const k = e.key === 'ArrowLeft' ? '-1' : e.key === 'ArrowRight' ? '1' : null; const b = k && dlg.querySelector(`[data-p="${k}"]`); if (b && !b.disabled) b.click(); });
-
-// ---------- upload: browser -> Drive API directly with the user's own token ----------
-let tok = null; let tokAt = 0;
-async function getToken() { if (!tok || Date.now() - tokAt > 30 * 60e3) { tok = await run('token'); tokAt = Date.now(); } return tok; }
-function xhrUpload(method, url, body, headers, onProgress) {
-  return new Promise((res, rej) => {
-    const x = new XMLHttpRequest(); x.open(method, url);
-    Object.entries(headers).forEach(([k, v]) => x.setRequestHeader(k, v));
-    x.upload.onprogress = (e) => { if (e.lengthComputable) onProgress(e.loaded / e.total); };
-    x.onload = () => (x.status >= 200 && x.status < 300 ? res(JSON.parse(x.responseText || '{}')) : rej(Object.assign(new Error(`Drive API ${x.status}`), { status: x.status })));
-    x.onerror = () => rej(Object.assign(new Error('network'), { status: 0 })); x.send(body);
-  });
-}
-async function uploadOne(file, parentId, onProgress) {
-  const t = await getToken();
-  const boundary = `minidrive${Math.random().toString(36).slice(2)}`; const mime = file.type || 'application/octet-stream';
-  const meta = { name: file.name, parents: [parentId || state.me.root] };
-  const body = new Blob([`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n--${boundary}\r\nContent-Type: ${mime}\r\n\r\n`, file, `\r\n--${boundary}--`]);
-  try {
-    return await xhrUpload('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', body, { Authorization: `Bearer ${t}`, 'Content-Type': `multipart/related; boundary=${boundary}` }, onProgress);
-  } catch (e) {
-    if (e.status === 401) tok = null;
-    if (e.status !== 0 || file.size > 35 * 1024 * 1024) throw e;
-    const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(file); });
-    onProgress(0.5); return run('uploadSmall', parentId || state.me.root, file.name, mime, b64);
-  }
-}
-let upQueue = []; let upRunning = 0; let upDone = 0; let upTotal = 0; const dirCache = new Map();
-function uploadFiles(items) {
-  const parent = state.view === 'drive' && !state.search ? state.folder : null;
-  dirCache.clear();
-  items.forEach((it) => { upQueue.push({ ...it, parent }); upTotal++; }); pump();
-}
-async function resolveDir(parent, rel) {
-  const dir = rel.split('/').slice(0, -1).join('/'); if (!dir) return parent;
-  const key = `${parent}|${dir}`;
-  if (!dirCache.has(key)) dirCache.set(key, run('ensurePath', parent, dir)); // shared promise: siblings wait for one creation
-  return dirCache.get(key);
-}
-function pump() {
-  while (upRunning < 3 && upQueue.length) {
-    const job = upQueue.shift(); upRunning++;
-    const row = document.createElement('div'); row.className = 'up';
-    row.innerHTML = `<div class="name">${esc(job.rel || job.file.name)}</div><div class="bar"><i></i></div>`; $('#uploads').append(row); $('#uploads').hidden = false; headUp();
-    const bar = row.querySelector('i');
-    (async () => {
-      const parent = job.rel ? await resolveDir(job.parent, job.rel) : job.parent;
-      await uploadOne(job.file, parent, (p) => { bar.style.width = `${p * 100}%`; });
-      bar.style.width = '100%';
-    })().catch((e) => { row.classList.add('err'); row.append(` ✕ ${e.message}`); }).finally(() => {
-      upRunning--; upDone++; headUp(); pump();
-      if (!upQueue.length && !upRunning) { upDone = upTotal = 0; load(); refreshQuota(); setTimeout(() => { if (!upRunning && !upQueue.length && !$('#uploads .err')) { $('#uploads').hidden = true; $('#uploads').innerHTML = ''; } }, 3000); }
-    });
-  }
-}
-function headUp() {
-  let h = $('#uploads h4'); if (!h) { h = document.createElement('h4'); $('#uploads').prepend(h); }
-  h.innerHTML = `<span>Đang tải lên ${upDone}/${upTotal}</span><button class="icon" style="width:24px;height:24px" aria-label="Đóng" id="upX">✕</button>`;
-  $('#upX').onclick = () => { $('#uploads').hidden = true; $('#uploads').innerHTML = ''; };
-}
-$('#fileIn').onchange = (e) => { uploadFiles([...e.target.files].map((file) => ({ file, rel: '' }))); e.target.value = ''; };
-$('#dirIn').onchange = (e) => { uploadFiles([...e.target.files].map((file) => ({ file, rel: file.webkitRelativePath }))); e.target.value = ''; };
-$('#verIn').onchange = guard(async (e) => {
-  const file = e.target.files[0]; const f = state.verTarget; e.target.value = ''; if (!file || !f) return;
-  toast('Đang tải lên phiên bản mới…');
-  await xhrUpload('PATCH', `https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(f.id)}?uploadType=media&fields=id`, file, { Authorization: `Bearer ${await getToken()}`, 'Content-Type': file.type || 'application/octet-stream' }, () => {});
-  toast('Đã cập nhật – Google Drive giữ lịch sử phiên bản cũ'); load(); refreshQuota();
-});
-
-async function readEntries(entry, prefix = '') {
-  if (entry.isFile) return new Promise((r) => entry.file((file) => r([{ file, rel: prefix ? prefix + file.name : '' }]), () => r([])));
-  const reader = entry.createReader(); const out = []; let batch;
-  do { batch = await new Promise((r) => reader.readEntries(r, () => r([]))); for (const en of batch) out.push(...await readEntries(en, `${prefix}${entry.name}/`)); } while (batch.length);
-  return out;
-}
-let dragDepth = 0; let internalDrag = null;
-document.addEventListener('dragenter', (e) => { if (!internalDrag && e.dataTransfer && e.dataTransfer.types.includes('Files')) { dragDepth++; $('#drop').hidden = false; } });
-document.addEventListener('dragleave', () => { if (!internalDrag && dragDepth > 0 && --dragDepth === 0) $('#drop').hidden = true; });
-document.addEventListener('dragover', (e) => {
-  if ((e.dataTransfer && e.dataTransfer.types.includes('Files')) || internalDrag) e.preventDefault();
-  document.querySelectorAll('.dragover').forEach((x) => x.classList.remove('dragover'));
-  const t = dropTarget(e); if (t) t.el.classList.add('dragover');
-});
-function dropTarget(e) {
-  const el = e.target.closest && e.target.closest('.item[data-id], [data-drop]'); if (!el || !internalDrag) return null;
-  if (el.dataset.drop !== undefined) return { el, id: el.dataset.drop || null };
-  const f = byId(el.dataset.id); return f && f.isFolder && !internalDrag.some((x) => x.id === f.id) ? { el, id: f.id } : null;
-}
-document.addEventListener('drop', guard(async (e) => {
-  e.preventDefault(); dragDepth = 0; $('#drop').hidden = true;
-  if (internalDrag) { const t = dropTarget(e); const files = internalDrag; internalDrag = null; if (t) moveTo(files, t.id); return; }
-  const entries = [...(e.dataTransfer.items || [])].map((i) => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
-  if (!entries.length) return uploadFiles([...e.dataTransfer.files].map((file) => ({ file, rel: '' })));
-  const all = (await Promise.all(entries.map((en) => readEntries(en)))).flat(); if (all.length) uploadFiles(all);
-}));
-$('#list').addEventListener('dragstart', (e) => {
-  const el = e.target.closest('.item'); if (!el) return;
-  if (!state.sel.has(el.dataset.id)) { state.sel = new Set([el.dataset.id]); renderSel(); }
-  internalDrag = selFiles(); e.dataTransfer.setData('text/plain', 'move'); e.dataTransfer.effectAllowed = 'move';
-});
-document.addEventListener('dragend', () => { internalDrag = null; document.querySelectorAll('.dragover').forEach((x) => x.classList.remove('dragover')); });
-
-// ---------- misc ----------
-$('#newBtn').onclick = () => { $('#newMenu').hidden = !$('#newMenu').hidden; };
-$('#newMenu').onclick = (e) => {
-  const a = e.target.dataset.act; if (!a) return; $('#newMenu').hidden = true;
-  if (state.view !== 'drive' || state.search) go('drive', null);
-  ({ newFolder, uploadFile: () => $('#fileIn').click(), uploadFolder: () => $('#dirIn').click() })[a]();
+  $('#go').disabled = false;
 };
-$('#viewBtn').onclick = () => { state.mode = state.mode === 'grid' ? 'rows' : 'grid'; store.set('mode', state.mode); render(); };
-$('#sort').onchange = (e) => { state.sort = e.target.value; store.set('sort', state.sort); load(); };
-let st; $('#search').oninput = (e) => { clearTimeout(st); st = setTimeout(() => { state.search = e.target.value.trim(); load(); }, 350); };
-const applyTheme = (t) => { document.documentElement.dataset.theme = t; store.set('theme', t); };
-applyTheme(store.get('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-$('#themeBtn').onclick = () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-boot();
-
 </script>
 </body>
 </html>
