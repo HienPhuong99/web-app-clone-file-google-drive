@@ -8,7 +8,7 @@ Chỉ có 2 tệp: `apps-script/Code.gs`, `apps-script/Index.html`. Không thêm
 (Bản "clone giao diện Google Drive" bằng Node trước đó đã bị gỡ theo yêu cầu – đừng khôi phục.)
 
 ## Đã deploy (06/10/2026)
-Project Apps Script "Drive Clone" (ID `1xEyBC0FMOQzacc15agj7RlWZ9E7vxt_UQYiWWEEvoi1YizpEOcIZZuk5`), deployment duy nhất đang hoạt động: <https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec>. Các deployment cũ đã archive. Đã test clone 1 tệp được share: OK.
+Project Apps Script "Drive Clone" (ID `1xEyBC0FMOQzacc15agj7RlWZ9E7vxt_UQYiWWEEvoi1YizpEOcIZZuk5`), deployment duy nhất đang hoạt động: <https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec>. Link rút gọn gửi người dùng: <https://tinyurl.com/driveclone-vn> (TinyURL, trỏ tới link trên). Các deployment cũ đã archive. Đã test clone 1 tệp được share: OK.
 
 ## Cách deploy / cập nhật
 Làm theo mục "Deploy" trong README trên https://script.google.com bằng trình duyệt (Claude in Chrome):

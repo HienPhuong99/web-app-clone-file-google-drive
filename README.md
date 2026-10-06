@@ -3,7 +3,7 @@
 Web app miễn phí (Google Apps Script) để **copy tệp/thư mục được chia sẻ trên Google Drive vào Drive của bạn**:
 dán link được share → (tuỳ chọn) dán link thư mục đích → bấm **Clone**.
 
-**Bản đang chạy:** <https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec>
+**Link dùng app:** <https://tinyurl.com/driveclone-vn> (link gốc: <https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec>)
 
 ## Khi nào nên dùng app này?
 | Bạn cần | Cách đơn giản nhất |
