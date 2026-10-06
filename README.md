@@ -3,6 +3,8 @@
 Web app miễn phí (Google Apps Script) để **copy tệp/thư mục được chia sẻ trên Google Drive vào Drive của bạn**:
 dán link được share → (tuỳ chọn) dán link thư mục đích → bấm **Clone**.
 
+**Bản đang chạy:** <https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec>
+
 - Hỗ trợ tệp, Google Docs/Sheets/Slides, shortcut, và **cả thư mục** (copy đệ quy, tự chạy tiếp khi vượt giới hạn 6 phút của Apps Script).
 - Nhiều link cùng lúc (mỗi dòng một link).
 - Không cần server, không cần thẻ thanh toán. Mỗi người dùng copy vào Drive của chính họ.

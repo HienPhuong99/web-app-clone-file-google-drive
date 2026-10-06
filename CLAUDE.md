@@ -7,7 +7,10 @@ Web app Google Apps Script: dán link tệp/thư mục được chia sẻ + (tu�
 Chỉ có 2 tệp: `apps-script/Code.gs`, `apps-script/Index.html`. Không thêm tính năng ngoài phạm vi này nếu người dùng không yêu cầu.
 (Bản "clone giao diện Google Drive" bằng Node trước đó đã bị gỡ theo yêu cầu – đừng khôi phục.)
 
-## Việc tiếp theo: deploy, đưa link `…/exec` cho người dùng
+## Đã deploy (06/10/2026)
+Project Apps Script "Drive Clone" (ID `1xEyBC0FMOQzacc15agj7RlWZ9E7vxt_UQYiWWEEvoi1YizpEOcIZZuk5`), deployment duy nhất đang hoạt động: <https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec>. Các deployment cũ đã archive. Đã test clone 1 tệp được share: OK.
+
+## Cách deploy / cập nhật
 Làm theo mục "Deploy" trong README trên https://script.google.com bằng trình duyệt (Claude in Chrome):
 tạo project, dán 2 tệp, Deploy → Web app, **Execute as: User accessing the web app**, **Who has access: Anyone with Google account**.
 Người dùng tự bấm Authorize/Allow. Sau đó mở link, test copy 1 tệp và 1 thư mục được chia sẻ, báo link cho người dùng.
