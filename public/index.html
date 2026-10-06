@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini Drive</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a73e8' d='M7 3h10l5 9-5 9H7l-5-9z'/%3E%3C/svg%3E">
+</head>
+<body>
+<!-- Auth -->
+<main id="auth" hidden>
+  <form id="authForm" class="card">
+    <h1>Mini Drive</h1>
+    <p class="muted" id="authSub">Đăng nhập để tiếp tục</p>
+    <input name="name" id="authName" placeholder="Tên hiển thị" autocomplete="name" hidden>
+    <input name="email" type="email" placeholder="Email" required autocomplete="email">
+    <input name="password" type="password" placeholder="Mật khẩu (≥ 8 ký tự)" required autocomplete="current-password">
+    <p class="error" id="authErr"></p>
+    <button class="btn primary" id="authBtn">Đăng nhập</button>
+    <a href="#" id="authSwitch">Chưa có tài khoản? Đăng ký</a>
+  </form>
+</main>
+
+<!-- App -->
+<div id="app" hidden>
+  <header>
+    <button class="icon" id="menuBtn" aria-label="Menu">☰</button>
+    <div class="logo">▲ Mini Drive</div>
+    <input id="search" type="search" placeholder="Tìm theo tên hoặc nội dung…" aria-label="Tìm kiếm">
+    <button class="icon" id="themeBtn" aria-label="Đổi giao diện" title="Sáng/Tối">◐</button>
+    <div class="user"><button class="avatar" id="userBtn" aria-label="Tài khoản"></button></div>
+  </header>
+  <aside id="side">
+    <div class="newwrap">
+      <button class="btn new" id="newBtn">＋ Mới</button>
+      <div class="menu" id="newMenu" hidden>
+        <button data-act="newFolder">📁 Thư mục mới</button>
+        <button data-act="uploadFile">⬆ Tải tệp lên</button>
+        <button data-act="uploadFolder">🗂 Tải thư mục lên</button>
+        <button data-act="newText">📝 Tệp văn bản mới</button>
+      </div>
+    </div>
+    <nav id="nav">
+      <a href="#/drive" data-view="drive">🗄 Drive của tôi</a>
+      <a href="#/recent" data-view="recent">🕑 Gần đây</a>
+      <a href="#/starred" data-view="starred">⭐ Có gắn dấu sao</a>
+      <a href="#/shared" data-view="shared">🔗 Đã chia sẻ</a>
+      <a href="#/trash" data-view="trash">🗑 Thùng rác</a>
+    </nav>
+    <div class="quota"><div class="bar"><i id="quotaBar"></i></div><small id="quotaText"></small></div>
+  </aside>
+  <section id="main">
+    <div class="toolbar">
+      <div id="crumbs" class="crumbs"></div>
+      <div class="spacer"></div>
+      <button class="btn" id="emptyTrash" hidden>Dọn sạch thùng rác</button>
+      <select id="sort" aria-label="Sắp xếp">
+        <option value="name:asc">Tên A→Z</option><option value="name:desc">Tên Z→A</option>
+        <option value="updated:desc">Mới sửa</option><option value="size:desc">Dung lượng</option>
+      </select>
+      <button class="icon" id="viewBtn" aria-label="Chế độ xem" title="Lưới/Danh sách">▦</button>
+    </div>
+    <div id="selbar" hidden></div>
+    <div id="list" tabindex="0"></div>
+    <div id="empty" class="empty" hidden></div>
+    <div id="drop" hidden>Thả tệp hoặc thư mục để tải lên</div>
+  </section>
+</div>
+
+<div class="menu ctx" id="ctx" hidden></div>
+<div class="menu" id="userMenu" hidden><div class="muted pad" id="userInfo"></div><button id="logoutBtn">Đăng xuất</button></div>
+<input type="file" id="fileIn" multiple hidden><input type="file" id="dirIn" webkitdirectory hidden>
+<div id="uploads" hidden></div>
+<div id="toast" role="status"></div>
+<dialog id="dlg"></dialog>
+<script src="/app.js"></script>
+</body>
+</html>
