@@ -3,106 +3,137 @@
 <head>
 <base target="_blank">
 <meta charset="utf-8">
+<script>try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <style>
-  /* Giao diện kiểu iOS 27 (Liquid Glass). Màu hệ thống theo Apple HIG (iOS 26+); label/separator theo giá trị API iOS 13 (Apple không công bố). */
-  :root {
-    color-scheme: light dark;
-    --blue:#0088FF; --green:#34C759; --red:#FF383C; --gray:#8E8E93; --gray5:#E5E5EA;
-    --label:#000; --label-2:rgba(60,60,67,.76); --placeholder:rgba(60,60,67,.6);
-    --sep:rgba(60,60,67,.29); --sep-opaque:#C6C6C8; --fill:rgba(120,120,128,.2);
-    --bg:#F2F2F7; --bg-2:#FFF; --press:var(--gray5);
-    --tint-text:#1E6EF4; --tint-fill:#1E6EF4; /* xanh tương phản cao của HIG: chữ trắng đạt 4.6:1 */
-    --glass:rgba(255,255,255,.75); /* nền + viền kính theo Konsta UI, blur theo Framework7 */
-    --glass-rim:inset 1px 1px 0 -.5px #fff, inset -1px -1px 0 -.5px #fff, 0 0 0 var(--hair) rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.12);
-    --hair:.5px; --r-group:26px; --gutter:16px; --row-h:52px; --gap:24px;
-    --font:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,"Segoe UI Variable Text","Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
-  }
-  @media (prefers-color-scheme: dark) { :root {
-    --blue:#0091FF; --green:#30D158; --red:#FF4245; --gray5:#2C2C2E;
-    --label:#FFF; --label-2:rgba(235,235,245,.6); --placeholder:rgba(235,235,245,.45);
-    --sep:rgba(84,84,88,.6); --sep-opaque:#38383A; --fill:rgba(120,120,128,.36);
-    --bg:#000; --bg-2:#1C1C1E; --press:#2C2C2E; --tint-text:#0091FF;
-    --glass:rgba(50,50,50,.5);
-    --glass-rim:inset 1px 1px 0 -.5px rgba(255,255,255,.4), inset 0 0 0 1px rgba(255,255,255,.15), 0 0 0 var(--hair) rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.4);
-  } }
-  @media (max-resolution: 1.5dppx) { :root { --hair:1px; } }
+/* Liquid Glass theo hệ thiết kế của DoGia (github.com/HienPhuong99/DoGia): kính mờ trên nền pastel, viền sáng phía trên + viền tối mảnh, chuyển động kiểu iOS */
+:root{color-scheme:light;--tint:.35;interpolate-size:allow-keywords;--ios:cubic-bezier(.32,.72,0,1);
+--wall:#e8edf6;--b1:#7ec3ff;--b2:#c6a8ff;--b3:#ffb3c6;--b4:#9eeed3;
+--text:#0b0b0f;--muted:rgba(60,60,67,.74);--faint:rgba(60,60,67,.52);--line:rgba(60,60,67,.14);--track:rgba(120,120,128,.13);
+--accent:#007aff;--ok:#1f9d4c;--err:#e5352b;--err-bg:rgba(255,59,48,.13);
+--g:255 255 255;--ga:calc(.4 + var(--tint)*.5);--bar-a:calc(.16 + var(--tint)*.22);--brd:rgba(255,255,255,.7);--bar-brd:rgba(255,255,255,.62);--edge:rgba(0,0,0,.09);--spec:rgba(255,255,255,.95);--spec-b:rgba(255,255,255,.58);--rim:rgba(255,255,255,.42);--sheen-t:rgba(255,255,255,.38);--sheen-b:rgba(255,255,255,.2);
+--sh:0 8px 28px rgba(40,50,90,.12);--sh-s:0 2px 8px rgba(40,50,90,.1);--bar-sh:inset 0 1.5px 1px var(--spec),inset 0 -1.5px 1.5px var(--spec-b),inset 0 0 12px var(--rim),0 0 0 .5px var(--edge),0 12px 32px rgba(20,30,60,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--wall:#05060b;--b1:#1c48c9;--b2:#5f27c4;--b3:#a3185a;--b4:#0b6e5a;
+--text:#f5f5f7;--muted:rgba(235,235,245,.72);--faint:rgba(235,235,245,.46);--line:rgba(235,235,245,.12);--track:rgba(120,120,128,.24);
+--accent:#0a84ff;--ok:#30d158;--err:#ff6b61;--err-bg:rgba(255,69,58,.22);
+--g:30 30 36;--ga:calc(.36 + var(--tint)*.52);--bar-a:calc(.22 + var(--tint)*.26);--brd:rgba(255,255,255,.14);--bar-brd:rgba(255,255,255,.26);--edge:rgba(0,0,0,.6);--spec:rgba(255,255,255,.42);--spec-b:rgba(255,255,255,.18);--rim:rgba(255,255,255,.14);--sheen-t:rgba(255,255,255,.18);--sheen-b:rgba(255,255,255,.07);
+--sh:0 10px 30px rgba(0,0,0,.45);--sh-s:0 2px 8px rgba(0,0,0,.35);--bar-sh:inset 0 1.5px 1px var(--spec),inset 0 -1.5px 1.5px var(--spec-b),inset 0 0 14px var(--rim),0 0 0 .5px var(--edge),0 14px 36px rgba(0,0,0,.48)}}
+:root[data-theme=dark]{color-scheme:dark;--wall:#05060b;--b1:#1c48c9;--b2:#5f27c4;--b3:#a3185a;--b4:#0b6e5a;
+--text:#f5f5f7;--muted:rgba(235,235,245,.72);--faint:rgba(235,235,245,.46);--line:rgba(235,235,245,.12);--track:rgba(120,120,128,.24);
+--accent:#0a84ff;--ok:#30d158;--err:#ff6b61;--err-bg:rgba(255,69,58,.22);
+--g:30 30 36;--ga:calc(.36 + var(--tint)*.52);--bar-a:calc(.22 + var(--tint)*.26);--brd:rgba(255,255,255,.14);--bar-brd:rgba(255,255,255,.26);--edge:rgba(0,0,0,.6);--spec:rgba(255,255,255,.42);--spec-b:rgba(255,255,255,.18);--rim:rgba(255,255,255,.14);--sheen-t:rgba(255,255,255,.18);--sheen-b:rgba(255,255,255,.07);
+--sh:0 10px 30px rgba(0,0,0,.45);--sh-s:0 2px 8px rgba(0,0,0,.35);--bar-sh:inset 0 1.5px 1px var(--spec),inset 0 -1.5px 1.5px var(--spec-b),inset 0 0 14px var(--rim),0 0 0 .5px var(--edge),0 14px 36px rgba(0,0,0,.48)}
 
-  * { box-sizing:border-box; }
-  html { font-size:106.25%; -webkit-text-size-adjust:100%; } /* 1rem = 17px (Body), vẫn theo cỡ chữ trình duyệt */
-  body { margin:0; min-height:100vh; background:var(--bg); color:var(--label); font:400 1rem/1.294 var(--font); -webkit-font-smoothing:antialiased;
-    padding:max(24px,env(safe-area-inset-top)) max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left)); }
-  main { width:min(620px,100%); margin:0 auto; padding-bottom:max(16px,env(safe-area-inset-bottom)); }
-  h1 { margin:0 0 4px; font:700 2rem/1.206 var(--font); letter-spacing:.01em; }  /* Large Title 34/41 */
-  #who { margin:0 0 var(--gap); font:400 .882rem/1.333 var(--font); color:var(--label-2); }
+/* Ba lớp kính: thẻ nội dung, thanh nổi, điều khiển */
+.card,details.src{background:rgb(var(--g)/var(--ga));-webkit-backdrop-filter:blur(20px) saturate(1.75);backdrop-filter:blur(20px) saturate(1.75);border:1px solid var(--brd);box-shadow:inset 0 1px 0 var(--spec),0 0 0 .5px var(--edge),var(--sh)}
+.top::before,.bar{background:rgb(var(--g)/var(--bar-a));-webkit-backdrop-filter:blur(11px) saturate(2.1) contrast(1.06) brightness(1.03);backdrop-filter:blur(11px) saturate(2.1) contrast(1.06) brightness(1.03);border:1px solid var(--bar-brd);box-shadow:var(--bar-sh)}
+.btn,textarea,input{background:rgb(var(--g)/var(--ga));-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);border:1px solid var(--brd);box-shadow:inset 0 1px 0 var(--spec),0 0 0 .5px var(--edge),var(--sh-s)}
 
-  /* Nhóm bo góc kiểu Settings (inset grouped) */
-  section { margin-bottom:var(--gap); }
-  .group { background:var(--bg-2); border-radius:var(--r-group); overflow:hidden; margin:0 0 var(--gap); }
-  section .group { margin:0; }
-  .hdr { display:block; margin:0 16px 8px; font:600 1rem/1.294 var(--font); color:var(--label-2); }
-  .ftr { margin:8px 16px 0; font:400 .765rem/1.385 var(--font); color:var(--label-2); }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background:var(--wall);color:var(--text);font:15px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable","Segoe UI",system-ui,Roboto,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:-18%;z-index:-1;pointer-events:none;background:radial-gradient(38% 32% at 18% 14%,var(--b1),transparent 70%),radial-gradient(34% 30% at 84% 16%,var(--b2),transparent 70%),radial-gradient(40% 36% at 74% 86%,var(--b3),transparent 70%),radial-gradient(36% 34% at 10% 84%,var(--b4),transparent 70%);transform:translateZ(0)}
+main{width:min(640px,100%);margin:0 auto;padding:0 16px max(24px,env(safe-area-inset-bottom))}
+h1{font-size:30px;line-height:1.15;font-weight:700;letter-spacing:-.022em;margin:0;transform-origin:left center;transition:transform .34s var(--ios)}
+.sub{color:var(--muted);font-size:13px}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0;touch-action:manipulation}
+textarea,input{display:block;width:100%;font:inherit;color:inherit;border-radius:16px;padding:11px 14px;outline:none;-webkit-appearance:none;appearance:none}
+textarea{min-height:104px;max-height:40vh;resize:none;field-sizing:content}
+::placeholder{color:var(--faint)}
+textarea:focus-visible,input:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-  textarea, input { display:block; width:100%; margin:0; border:0; border-radius:0; background:transparent; color:var(--label);
-    font:inherit; padding:15px 16px; min-height:var(--row-h); outline:0; -webkit-appearance:none; appearance:none; }
-  textarea { min-height:112px; max-height:40vh; resize:none; field-sizing:content; }
-  ::placeholder { color:var(--placeholder); opacity:1; }
-  section .group:focus-within { outline:3px solid var(--blue); outline-offset:2px; }
+.btn{border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;white-space:nowrap;transition:transform .34s var(--ios),background-color .18s}
+.btn:active:not(:disabled){transform:scale(.94);transition-duration:.1s}
+.btn.tint{background:color-mix(in srgb,var(--accent) 88%,transparent);border-color:rgba(255,255,255,.35);color:#fff}
+.btn.icon{width:38px;height:38px;padding:0;font-size:17px;display:inline-grid;place-items:center}
 
-  /* Mục mở rộng với mũi tên kiểu iOS */
-  summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:8px; -webkit-tap-highlight-color:transparent; }
-  summary::-webkit-details-marker { display:none; }
-  summary::after { content:""; width:7px; height:7px; margin-left:auto; border:solid var(--gray); border-width:2px 2px 0 0; rotate:45deg; transition:rotate .2s; }
-  details[open] > summary::after { rotate:135deg; }
-  summary:focus-visible { outline:3px solid var(--blue); outline-offset:-3px; border-radius:inherit; }
-  .guide > summary { min-height:var(--row-h); padding:0 16px; color:var(--tint-text); }
-  .guide > summary:active { background:var(--press); }
-  .guide-body { margin-left:16px; border-top:var(--hair) solid var(--sep); padding:12px 16px 16px 0; font:400 .882rem/1.333 var(--font); }
-  .guide-body ol, .guide-body ul { margin:6px 0 10px; padding-left:20px; }
+/* Thanh đầu trang nổi */
+.top{position:sticky;top:max(10px,env(safe-area-inset-top));z-index:10;isolation:isolate;display:flex;justify-content:space-between;align-items:flex-start;gap:10px 14px;margin:12px 0 14px;padding:14px 18px;border-radius:28px}
+.top::before,.top::after,.bar::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.top::before{z-index:-1;transition:background-color .24s ease}
+.top::after,.bar::after{z-index:2;background:linear-gradient(180deg,var(--sheen-t) 0%,transparent 28%,transparent 74%,var(--sheen-b) 100%);box-shadow:inset 0 0 10px var(--rim)}
+.scrolled .top{--bar-a:calc(.22 + var(--tint)*.26)}
+.scrolled h1{transform:scale(.72)}
+.brand{min-width:0}
+.brand-row{display:flex;align-items:center;gap:10px}
+.brand-logo{width:34px;height:34px;padding:4px;border-radius:11px;flex-shrink:0;display:block;background:rgb(var(--g)/.62);border:1px solid var(--brd);box-shadow:inset 0 1px 0 var(--spec),0 2px 8px rgba(20,30,60,.1);transition:transform .34s var(--ios)}
+.scrolled .brand-logo{transform:scale(.82)}
+#who{margin-top:2px;transition:opacity .22s ease}
 
-  /* Nhật ký dạng danh sách, mới nhất ở trên */
-  #log:empty { display:none; }
-  .row { position:relative; display:grid; grid-template-columns:22px 1fr; gap:12px; align-items:start; min-height:var(--row-h); padding:15px 16px; overflow-wrap:anywhere; }
-  .row + .row::before { content:""; position:absolute; top:0; left:50px; right:16px; border-top:var(--hair) solid var(--sep); }
-  .bd { min-width:0; }
-  .bd a { color:var(--tint-text); font-weight:600; text-decoration:none; }
-  .m { display:block; margin-top:2px; font:400 .882rem/1.333 var(--font); color:var(--label-2); }
-  .src { display:block; margin-top:2px; font:400 .765rem/1.385 var(--font); color:var(--label-2); }
-  .ico { display:block; width:22px; height:22px; }
-  .i-ok { color:var(--green); } .i-err { color:var(--red); } .i-spin { color:var(--gray); animation:spin .8s steps(8) infinite; }
-  @keyframes spin { to { rotate:360deg; } }
-  .fails { margin-top:2px; font:400 .765rem/1.385 var(--font); color:var(--label-2); }
-  .fails > summary { color:var(--label); font-weight:600; min-height:44px; }
-  .fails > summary::after { margin-left:2px; width:6px; height:6px; }
+/* Mục mở rộng: mũi tên › xoay, nội dung trượt mở */
+details::details-content{block-size:0;overflow:hidden;opacity:0;transform:translateY(-4px);transition:block-size .38s var(--ios),opacity .26s ease,transform .36s var(--ios),content-visibility .38s allow-discrete}
+details[open]::details-content{block-size:auto;opacity:1;transform:translateY(0)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"›";font-size:20px;line-height:1;color:var(--muted);transition:rotate .42s var(--ios)}
+details[open]>summary::after{rotate:90deg}
+details.src{border-radius:22px;padding:12px 16px;margin-bottom:12px}
+details.src>summary{font-size:14px;font-weight:600;min-height:24px}
+.guide-body{font-size:14px;padding-top:8px}
+.guide-body ol,.guide-body ul{margin:6px 0 10px;padding-left:20px}
 
-  /* Bề mặt Liquid Glass duy nhất: thanh nổi chứa nút chính (HIG: kính chỉ cho lớp điều khiển, không cho nội dung) */
-  .bar { position:sticky; bottom:max(12px,env(safe-area-inset-bottom)); z-index:1; padding:6px; border-radius:999px; background:var(--glass);
-    -webkit-backdrop-filter:saturate(180%) blur(16px); backdrop-filter:saturate(180%) blur(16px); box-shadow:var(--glass-rim); }
-  .btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:48px; padding:0 20px; border:0; border-radius:999px;
-    background:var(--tint-fill); color:#fff; font:600 1rem/1.294 var(--font); cursor:pointer;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.15); transition:transform .15s, filter .15s; -webkit-tap-highlight-color:transparent; }
-  @media (hover:hover) { .btn:hover:not(:disabled) { filter:brightness(1.06); } }
-  .btn:active:not(:disabled) { transform:scale(.97); filter:brightness(1.12); }
-  .btn:disabled { background:var(--fill); color:var(--label-2); box-shadow:none; cursor:default; }
-  .btn .ico { width:18px; height:18px; color:inherit; }
-  .btn:focus-visible { outline:3px solid var(--blue); outline-offset:3px; }
-  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.card{position:relative;border-radius:24px;padding:14px 16px;margin-bottom:12px;animation:rise .52s var(--ios) both}
+@keyframes rise{from{opacity:0;transform:translate3d(0,14px,0) scale(.975)}}
+label{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
+.hint{font-size:12px;color:var(--muted);margin:6px 2px 0}
+.field+.field{margin-top:14px}
 
-  /* Trợ năng: giảm trong suốt / tăng tương phản / giảm chuyển động / chế độ tương phản cao Windows */
-  @media (prefers-reduced-transparency: reduce) { .bar { background:var(--bg-2); -webkit-backdrop-filter:none; backdrop-filter:none; } }
-  @media (prefers-contrast: more) {
-    :root { --sep:var(--sep-opaque); --label-2:var(--label); }
-    .group { box-shadow:inset 0 0 0 1px var(--sep-opaque); }
-    .bar { background:var(--bg-2); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 0 0 1px var(--label); }
-  }
-  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } .btn:active:not(:disabled) { transform:none; } }
-  @media (forced-colors: active) { .btn, .bar, .group { border:1px solid CanvasText; } .ico path { stroke:Canvas; } }
+/* Nhật ký copy */
+#log:empty{display:none}
+#log{padding:4px 16px}
+.row{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;padding:12px 0;border-bottom:.5px solid var(--line);overflow-wrap:anywhere;animation:rise .4s var(--ios) both}
+.row:last-child{border-bottom:0}
+.bd{min-width:0}
+.bd a{font-weight:600;text-decoration:none}
+.m{display:block;margin-top:2px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.lnk{display:block;margin-top:2px;font-size:12px;color:var(--faint)}
+.ico{display:block;width:22px;height:22px}
+.i-ok{color:var(--ok)} .i-err{color:var(--err)} .i-spin{color:var(--muted);animation:spin .8s steps(8) infinite}
+@keyframes spin{to{rotate:360deg}}
+.fails{margin-top:4px;font-size:12px;color:var(--muted)}
+.fails>summary{justify-content:flex-start;color:var(--err);font-weight:600;min-height:32px}
+.fails>div{background:var(--err-bg);border-radius:12px;padding:8px 10px}
+
+/* Thanh nổi chứa nút Clone */
+.bar{position:sticky;bottom:max(14px,env(safe-area-inset-bottom));z-index:10;isolation:isolate;padding:4px;border-radius:999px;margin-top:4px}
+.bar .btn{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;font-size:16px}
+.bar .btn:disabled{background:var(--track);color:var(--muted);border-color:transparent;cursor:wait}
+.bar .ico{width:18px;height:18px;color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+@media (max-width:640px){
+main{padding:0 12px max(16px,env(safe-area-inset-bottom))}
+.top{top:max(8px,env(safe-area-inset-top));margin:8px 0 12px;padding:12px 14px;border-radius:24px}
+.brand-row{gap:8px}
+.brand-logo{width:30px;height:30px;padding:3px;border-radius:9px}
+h1{font-size:26px} .scrolled h1{transform:scale(.74)}
+.card{padding:14px;border-radius:22px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (prefers-reduced-transparency:reduce){:root{--tint:1!important;--bar-a:.94!important}}
+@media (prefers-contrast:more){:root{--tint:1!important;--bar-a:.96!important;--muted:var(--text);--line:var(--faint)}}
+@media (forced-colors:active){.ico path{stroke:Canvas}}
 </style>
 </head>
 <body>
 <main>
-  <h1>Drive Clone</h1>
-  <p id="who">Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.</p>
-  <details class="group guide">
+  <header class="top">
+    <div class="brand">
+      <div class="brand-row">
+        <svg class="brand-logo" viewBox="0 0 32 32" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#33a3ff"/><stop offset="1" stop-color="#0052d9"/></linearGradient></defs>
+          <rect x="5" y="4" width="15" height="18" rx="4" fill="#7ec3ff" fill-opacity=".35" stroke="#8ec8ff" stroke-width="1.2"/>
+          <rect x="11" y="10" width="16" height="19" rx="4.5" fill="#fff" fill-opacity=".7" stroke="url(#lg)" stroke-width="1.4"/>
+          <path d="M19 15.5v8M15 19.5h8" stroke="url(#lg)" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <h1>Drive Clone</h1>
+      </div>
+      <div class="sub" id="who">Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.</div>
+    </div>
+    <button type="button" class="btn icon" id="theme" aria-label="Đổi giao diện sáng / tối">◐</button>
+  </header>
+
+  <details class="src">
     <summary>Hướng dẫn sử dụng</summary>
     <div class="guide-body">
       <ol>
@@ -119,22 +150,23 @@
       <b>Lưu ý:</b> bạn phải xem được link, và chủ sở hữu không tắt quyền sao chép. Bản copy tính vào dung lượng Drive của bạn.
     </div>
   </details>
-  <form id="f">
-    <section>
-      <label class="hdr" for="src">Link được chia sẻ</label>
-      <div class="group"><textarea id="src" required inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"
-        placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…"></textarea></div>
-      <p class="ftr">Mỗi dòng một link.</p>
-    </section>
-    <section>
-      <label class="hdr" for="dst">Thư mục đích</label>
-      <div class="group"><input id="dst" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://drive.google.com/drive/folders/…"></div>
-      <p class="ftr">Tuỳ chọn – để trống sẽ lưu vào My Drive.</p>
-    </section>
+
+  <form id="f" class="card">
+    <div class="field">
+      <label for="src">Link được chia sẻ</label>
+      <textarea id="src" required inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"
+        placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…"></textarea>
+      <p class="hint">Mỗi dòng một link.</p>
+    </div>
+    <div class="field">
+      <label for="dst">Thư mục đích</label>
+      <input id="dst" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://drive.google.com/drive/folders/…">
+      <p class="hint">Tuỳ chọn – để trống sẽ lưu vào My Drive.</p>
+    </div>
   </form>
-  <div id="log" class="group"></div>
+  <div id="log" class="card"></div>
   <p id="sr" class="sr" aria-live="polite"></p>
-  <div class="bar"><button id="go" class="btn" form="f">Clone</button></div>
+  <div class="bar"><button id="go" class="btn tint" form="f">Clone</button></div>
 </main>
 <script>
 'use strict';
@@ -150,6 +182,15 @@ google.script.url.getLocation((l) => {
   if (l.parameters.src) $('#src').value = l.parameters.src.join('\n');
   if (l.parameter.dst) $('#dst').value = l.parameter.dst;
 });
+
+// Nút ◐ đổi sáng/tối (nhớ lựa chọn), thanh đầu thu nhỏ khi cuộn – giống DoGia
+const root = document.documentElement;
+$('#theme').onclick = () => {
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+};
+addEventListener('scroll', () => document.body.classList.toggle('scrolled', scrollY > 8), { passive: true });
 
 // Biểu tượng kiểu SF Symbols: checkmark.circle.fill, xmark.circle.fill, vòng xoay chờ
 const SVG = (c, b) => `<svg class="ico ${c}" viewBox="0 0 20 20" aria-hidden="true">${b}</svg>`;
@@ -171,7 +212,7 @@ function show(el, link, job, t0) {
   const left = job.done ? '' : ` · còn ${job.queue.length} thư mục`;
   const last = !job.done && job.last ? `<span class="m">Vừa copy: ${esc(job.last)}</span>` : '';
   const skipped = job.skipped ? `, bỏ qua ${job.skipped} tệp đã có` : '';
-  el.lastChild.innerHTML = `<a href="${esc(job.url)}">${esc(job.name)}</a><span class="m">${job.done ? 'Xong' : 'Đang copy'}, ${job.copied} tệp mới${skipped}${left} · ${clock(Date.now() - t0)}</span>${last}${failed}<span class="src">${esc(link)}</span>`;
+  el.lastChild.innerHTML = `<a href="${esc(job.url)}">${esc(job.name)}</a><span class="m">${job.done ? 'Xong' : 'Đang copy'}, ${job.copied} tệp mới${skipped}${left} · ${clock(Date.now() - t0)}</span>${last}${failed}<span class="lnk">${esc(link)}</span>`;
 }
 
 $('#f').onsubmit = async (e) => {
@@ -181,7 +222,7 @@ $('#f').onsubmit = async (e) => {
   const go = $('#go');
   go.disabled = true; go.innerHTML = ICON.spin + 'Đang copy…';
   for (const link of links) {
-    const el = row(); setIcon(el, 'spin'); el.lastChild.innerHTML = `Đang mở…<span class="src">${esc(link)}</span>`;
+    const el = row(); setIcon(el, 'spin'); el.lastChild.innerHTML = `Đang mở…<span class="lnk">${esc(link)}</span>`;
     const t0 = Date.now();
     let job, tick;
     try {
@@ -192,7 +233,7 @@ $('#f').onsubmit = async (e) => {
       while (!job.done) { job = await run('cloneStep', job); show(el, link, job, t0); }
       say(`Xong ${job.name}: ${job.copied} tệp mới${job.failed.length ? `, ${job.failed.length} tệp lỗi` : ''}`);
     } catch (err) {
-      setIcon(el, 'err'); el.lastChild.innerHTML = `${esc(err.message)}<span class="src">${esc(link)}</span>`;
+      setIcon(el, 'err'); el.lastChild.innerHTML = `${esc(err.message)}<span class="lnk">${esc(link)}</span>`;
       say(`Lỗi: ${err.message}`);
     } finally {
       clearInterval(tick);
