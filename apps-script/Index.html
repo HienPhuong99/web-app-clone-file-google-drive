@@ -9,27 +9,28 @@
 :root{color-scheme:light;--tint:.35;interpolate-size:allow-keywords;--ios:cubic-bezier(.32,.72,0,1);
 --wall:#e8edf6;--b1:#7ec3ff;--b2:#c6a8ff;--b3:#ffb3c6;--b4:#9eeed3;
 --text:#0b0b0f;--muted:rgba(60,60,67,.74);--faint:rgba(60,60,67,.52);--line:rgba(60,60,67,.14);--track:rgba(120,120,128,.13);
---accent:#007aff;--ok:#1f9d4c;--err:#e5352b;--err-bg:rgba(255,59,48,.13);
+--accent:#007aff;--ink:#0057d1;--m1:.72;--m2:.2;--m3:.42;--ok:#1f9d4c;--err:#e5352b;--err-bg:rgba(255,59,48,.13);
 --g:255 255 255;--ga:calc(.4 + var(--tint)*.5);--bar-a:calc(.16 + var(--tint)*.22);--brd:rgba(255,255,255,.7);--bar-brd:rgba(255,255,255,.62);--edge:rgba(0,0,0,.09);--spec:rgba(255,255,255,.95);--spec-b:rgba(255,255,255,.58);--rim:rgba(255,255,255,.42);--sheen-t:rgba(255,255,255,.38);--sheen-b:rgba(255,255,255,.2);
 --sh:0 8px 28px rgba(40,50,90,.12);--sh-s:0 2px 8px rgba(40,50,90,.1);--bar-sh:inset 0 1.5px 1px var(--spec),inset 0 -1.5px 1.5px var(--spec-b),inset 0 0 12px var(--rim),0 0 0 .5px var(--edge),0 12px 32px rgba(20,30,60,.18)}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--wall:#05060b;--b1:#1c48c9;--b2:#5f27c4;--b3:#a3185a;--b4:#0b6e5a;
 --text:#f5f5f7;--muted:rgba(235,235,245,.72);--faint:rgba(235,235,245,.46);--line:rgba(235,235,245,.12);--track:rgba(120,120,128,.24);
---accent:#0a84ff;--ok:#30d158;--err:#ff6b61;--err-bg:rgba(255,69,58,.22);
+--accent:#0a84ff;--ink:#a9d4ff;--m1:.26;--m2:.04;--m3:.14;--ok:#30d158;--err:#ff6b61;--err-bg:rgba(255,69,58,.22);
 --g:30 30 36;--ga:calc(.36 + var(--tint)*.52);--bar-a:calc(.22 + var(--tint)*.26);--brd:rgba(255,255,255,.14);--bar-brd:rgba(255,255,255,.26);--edge:rgba(0,0,0,.6);--spec:rgba(255,255,255,.42);--spec-b:rgba(255,255,255,.18);--rim:rgba(255,255,255,.14);--sheen-t:rgba(255,255,255,.18);--sheen-b:rgba(255,255,255,.07);
 --sh:0 10px 30px rgba(0,0,0,.45);--sh-s:0 2px 8px rgba(0,0,0,.35);--bar-sh:inset 0 1.5px 1px var(--spec),inset 0 -1.5px 1.5px var(--spec-b),inset 0 0 14px var(--rim),0 0 0 .5px var(--edge),0 14px 36px rgba(0,0,0,.48)}}
 :root[data-theme=dark]{color-scheme:dark;--wall:#05060b;--b1:#1c48c9;--b2:#5f27c4;--b3:#a3185a;--b4:#0b6e5a;
 --text:#f5f5f7;--muted:rgba(235,235,245,.72);--faint:rgba(235,235,245,.46);--line:rgba(235,235,245,.12);--track:rgba(120,120,128,.24);
---accent:#0a84ff;--ok:#30d158;--err:#ff6b61;--err-bg:rgba(255,69,58,.22);
+--accent:#0a84ff;--ink:#a9d4ff;--m1:.26;--m2:.04;--m3:.14;--ok:#30d158;--err:#ff6b61;--err-bg:rgba(255,69,58,.22);
 --g:30 30 36;--ga:calc(.36 + var(--tint)*.52);--bar-a:calc(.22 + var(--tint)*.26);--brd:rgba(255,255,255,.14);--bar-brd:rgba(255,255,255,.26);--edge:rgba(0,0,0,.6);--spec:rgba(255,255,255,.42);--spec-b:rgba(255,255,255,.18);--rim:rgba(255,255,255,.14);--sheen-t:rgba(255,255,255,.18);--sheen-b:rgba(255,255,255,.07);
 --sh:0 10px 30px rgba(0,0,0,.45);--sh-s:0 2px 8px rgba(0,0,0,.35);--bar-sh:inset 0 1.5px 1px var(--spec),inset 0 -1.5px 1.5px var(--spec-b),inset 0 0 14px var(--rim),0 0 0 .5px var(--edge),0 14px 36px rgba(0,0,0,.48)}
 
 /* Ba lớp kính: thẻ nội dung, thanh nổi, điều khiển */
 .card,details.src{background:rgb(var(--g)/var(--ga));-webkit-backdrop-filter:blur(20px) saturate(1.75);backdrop-filter:blur(20px) saturate(1.75);border:1px solid var(--brd);box-shadow:inset 0 1px 0 var(--spec),0 0 0 .5px var(--edge),var(--sh)}
 .top::before,.bar{background:rgb(var(--g)/var(--bar-a));-webkit-backdrop-filter:blur(11px) saturate(2.1) contrast(1.06) brightness(1.03);backdrop-filter:blur(11px) saturate(2.1) contrast(1.06) brightness(1.03);border:1px solid var(--bar-brd);box-shadow:var(--bar-sh)}
-.btn,textarea,input{background:rgb(var(--g)/var(--ga));-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);border:1px solid var(--brd);box-shadow:inset 0 1px 0 var(--spec),0 0 0 .5px var(--edge),var(--sh-s)}
+textarea,input{background:rgb(var(--g)/var(--ga));-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);border:1px solid var(--brd);box-shadow:inset 0 1px 0 var(--spec),0 0 0 .5px var(--edge),var(--sh-s)}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
 body{margin:0;min-height:100vh;background:var(--wall);color:var(--text);font:15px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable","Segoe UI",system-ui,Roboto,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 body::before{content:"";position:fixed;inset:-18%;z-index:-1;pointer-events:none;background:radial-gradient(38% 32% at 18% 14%,var(--b1),transparent 70%),radial-gradient(34% 30% at 84% 16%,var(--b2),transparent 70%),radial-gradient(40% 36% at 74% 86%,var(--b3),transparent 70%),radial-gradient(36% 34% at 10% 84%,var(--b4),transparent 70%);transform:translateZ(0)}
 main{width:min(640px,100%);margin:0 auto;padding:0 16px max(24px,env(safe-area-inset-bottom))}
@@ -37,15 +38,28 @@ h1{font-size:30px;line-height:1.15;font-weight:700;letter-spacing:-.022em;margin
 .sub{color:var(--muted);font-size:13px}
 a{color:var(--accent)}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0;touch-action:manipulation}
-textarea,input{display:block;width:100%;font:inherit;color:inherit;border-radius:16px;padding:11px 14px;outline:none;-webkit-appearance:none;appearance:none}
+textarea,input{display:block;width:100%;font:inherit;font-size:16px;color:inherit;border-radius:16px;padding:11px 14px;outline:none;-webkit-appearance:none;appearance:none}
 textarea{min-height:104px;max-height:40vh;resize:none;field-sizing:content}
 ::placeholder{color:var(--faint)}
 textarea:focus-visible,input:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.btn{border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;white-space:nowrap;transition:transform .34s var(--ios),background-color .18s}
-.btn:active:not(:disabled){transform:scale(.94);transition-duration:.1s}
-.btn.tint{background:color-mix(in srgb,var(--accent) 88%,transparent);border-color:rgba(255,255,255,.35);color:#fff}
-.btn.icon{width:38px;height:38px;padding:0;font-size:17px;display:inline-grid;place-items:center}
+/* Nút kính gương: trong suốt, viền óng ánh xà cừ xoay chậm, vệt sáng lướt qua như mặt gương */
+@property --rim-a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.btn{position:relative;isolation:isolate;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;white-space:nowrap;color:var(--text);
+background:linear-gradient(180deg,rgb(255 255 255/var(--m1)) 0%,rgb(255 255 255/calc(var(--m1)*.55)) 48%,rgb(255 255 255/var(--m2)) 50%,rgb(255 255 255/var(--m3)) 100%);
+-webkit-backdrop-filter:blur(5px) saturate(1.9) brightness(1.06);backdrop-filter:blur(5px) saturate(1.9) brightness(1.06);
+box-shadow:inset 0 1.5px 1px var(--spec),inset 0 -1px 1px var(--spec-b),inset 0 0 12px var(--rim),0 0 0 .5px var(--edge),var(--sh-s);
+transition:transform .34s var(--ios),filter .2s}
+.btn::before,.btn::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none}
+.btn::before{padding:2px;background:conic-gradient(from var(--rim-a),#fff,#6cc4ff,#a98bff,#ff8fb1,#ffd66b,#5fe0b5,#fff);
+-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:rim 7s linear infinite}
+.btn::after{background:linear-gradient(105deg,transparent 30%,rgb(255 255 255/.7) 45%,rgb(214 236 255/.4) 51%,transparent 64%) 100% 0/250% 100% no-repeat,linear-gradient(115deg,rgb(108 196 255/.22),rgb(169 139 255/.18) 35%,rgb(255 143 177/.16) 65%,rgb(95 224 181/.2));animation:sweep 5.5s var(--ios) infinite}
+@keyframes rim{to{--rim-a:360deg}}
+@keyframes sweep{0%,58%{background-position:100% 0,0 0}100%{background-position:0 0,0 0}}
+.btn:active:not(:disabled){transform:scale(.94);filter:brightness(1.12) saturate(1.2);transition-duration:.1s}
+.btn.tint{color:var(--ink);background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 22%,rgb(255 255 255/var(--m1))) 0%,color-mix(in srgb,var(--accent) 14%,rgb(255 255 255/var(--m2))) 55%,color-mix(in srgb,var(--accent) 26%,rgb(255 255 255/var(--m3))) 100%)}
+.btn:disabled::before,.btn:disabled::after{animation:none;opacity:.35}
+.btn.icon{flex-shrink:0;width:38px;height:38px;padding:0;font-size:17px;display:inline-grid;place-items:center}
 
 /* Thanh đầu trang nổi */
 .top{position:sticky;top:max(10px,env(safe-area-inset-top));z-index:10;isolation:isolate;display:flex;justify-content:space-between;align-items:flex-start;gap:10px 14px;margin:12px 0 14px;padding:14px 18px;border-radius:28px}
@@ -97,7 +111,7 @@ label{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em;margin:
 /* Thanh nổi chứa nút Clone */
 .bar{position:sticky;bottom:max(14px,env(safe-area-inset-bottom));z-index:10;isolation:isolate;padding:4px;border-radius:999px;margin-top:4px}
 .bar .btn{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;font-size:16px}
-.bar .btn:disabled{background:var(--track);color:var(--muted);border-color:transparent;cursor:wait}
+.bar .btn:disabled{color:var(--muted);cursor:wait}
 .bar .ico{width:18px;height:18px;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
@@ -108,10 +122,18 @@ main{padding:0 12px max(16px,env(safe-area-inset-bottom))}
 .brand-logo{width:30px;height:30px;padding:3px;border-radius:9px}
 h1{font-size:26px} .scrolled h1{transform:scale(.74)}
 .card{padding:14px;border-radius:22px}
+.btn.icon{width:44px;height:44px}
+details.src{padding:0 16px}
+details.src>summary{min-height:48px}
+.guide-body{padding:0 0 12px}
+.fails>summary{min-height:44px}
+.bar .btn{min-height:50px;font-size:17px}
+/* đã nằm trên thẻ kính: bỏ lớp mờ thứ hai cho nhẹ máy */
+textarea,input{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgb(var(--g)/calc(var(--ga) + .12))}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-@media (prefers-reduced-transparency:reduce){:root{--tint:1!important;--bar-a:.94!important}}
-@media (prefers-contrast:more){:root{--tint:1!important;--bar-a:.96!important;--muted:var(--text);--line:var(--faint)}}
+@media (prefers-reduced-transparency:reduce){:root{--tint:1!important;--bar-a:.94!important;--m1:.95;--m2:.9;--m3:.92}.btn::after{display:none}}
+@media (prefers-contrast:more){:root{--tint:1!important;--bar-a:.96!important;--muted:var(--text);--line:var(--faint);--m1:.96;--m2:.92;--m3:.94}.btn::after{display:none}}
 @media (forced-colors:active){.ico path{stroke:Canvas}}
 </style>
 </head>
@@ -154,13 +176,13 @@ h1{font-size:26px} .scrolled h1{transform:scale(.74)}
   <form id="f" class="card">
     <div class="field">
       <label for="src">Link được chia sẻ</label>
-      <textarea id="src" required inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"
+      <textarea id="src" required autocapitalize="off" autocorrect="off" spellcheck="false"
         placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…"></textarea>
       <p class="hint">Mỗi dòng một link.</p>
     </div>
     <div class="field">
       <label for="dst">Thư mục đích</label>
-      <input id="dst" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://drive.google.com/drive/folders/…">
+      <input id="dst" inputmode="url" enterkeyhint="go" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://drive.google.com/drive/folders/…">
       <p class="hint">Tuỳ chọn – để trống sẽ lưu vào My Drive.</p>
     </div>
   </form>
