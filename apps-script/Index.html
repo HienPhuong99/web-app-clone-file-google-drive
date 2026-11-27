@@ -4,55 +4,137 @@
 <base target="_blank">
 <meta charset="utf-8">
 <style>
-  :root { --bg:#f6f8fc; --card:#fff; --fg:#1f1f1f; --muted:#5f6368; --line:#dadce0; --accent:#0b57d0; --ok:#188038; --err:#d93025; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#131316; --card:#1e1f22; --fg:#e3e3e3; --muted:#a0a4a8; --line:#3c3f43; --accent:#a8c7fa; --ok:#81c995; --err:#f28b82; } }
-  * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; display:grid; place-items:start center; padding:6vh 16px; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
-  main { width:min(620px,100%); background:var(--card); border-radius:16px; padding:28px; box-shadow:0 2px 12px rgba(0,0,0,.12); }
-  h1 { margin:0 0 4px; font-size:22px; } p { margin:0 0 18px; color:var(--muted); }
-  label { display:block; font-weight:600; margin:14px 0 6px; }
-  textarea, input { width:100%; font:inherit; color:inherit; background:transparent; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
-  textarea { min-height:90px; resize:vertical; }
-  textarea:focus, input:focus, button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
-  small { color:var(--muted); }
-  button { margin-top:18px; width:100%; padding:12px; border:0; border-radius:24px; background:var(--accent); color:var(--card); font:inherit; font-weight:600; cursor:pointer; }
-  button:disabled { opacity:.6; cursor:default; }
-  #log { margin-top:18px; display:flex; flex-direction:column; gap:8px; }
-  .row { border:1px solid var(--line); border-radius:10px; padding:10px 12px; word-break:break-word; }
-  .row.ok { border-color:var(--ok); } .row.err { border-color:var(--err); color:var(--err); }
-  .row a { color:var(--accent); font-weight:600; }
-  details { margin-top:4px; font-size:13px; color:var(--muted); }
-  .guide { margin:-8px 0 8px; font-size:14px; } .guide summary { color:var(--accent); font-weight:600; cursor:pointer; }
-  .guide ol, .guide ul { margin:6px 0 10px; padding-left:20px; }
+  /* Giao diện kiểu iOS 27 (Liquid Glass). Màu hệ thống theo Apple HIG (iOS 26+); label/separator theo giá trị API iOS 13 (Apple không công bố). */
+  :root {
+    color-scheme: light dark;
+    --blue:#0088FF; --green:#34C759; --red:#FF383C; --gray:#8E8E93; --gray5:#E5E5EA;
+    --label:#000; --label-2:rgba(60,60,67,.76); --placeholder:rgba(60,60,67,.6);
+    --sep:rgba(60,60,67,.29); --sep-opaque:#C6C6C8; --fill:rgba(120,120,128,.2);
+    --bg:#F2F2F7; --bg-2:#FFF; --press:var(--gray5);
+    --tint-text:#1E6EF4; --tint-fill:#1E6EF4; /* xanh tương phản cao của HIG: chữ trắng đạt 4.6:1 */
+    --glass:rgba(255,255,255,.75); /* nền + viền kính theo Konsta UI, blur theo Framework7 */
+    --glass-rim:inset 1px 1px 0 -.5px #fff, inset -1px -1px 0 -.5px #fff, 0 0 0 var(--hair) rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.12);
+    --hair:.5px; --r-group:26px; --gutter:16px; --row-h:52px; --gap:24px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,"Segoe UI Variable Text","Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --blue:#0091FF; --green:#30D158; --red:#FF4245; --gray5:#2C2C2E;
+    --label:#FFF; --label-2:rgba(235,235,245,.6); --placeholder:rgba(235,235,245,.45);
+    --sep:rgba(84,84,88,.6); --sep-opaque:#38383A; --fill:rgba(120,120,128,.36);
+    --bg:#000; --bg-2:#1C1C1E; --press:#2C2C2E; --tint-text:#0091FF;
+    --glass:rgba(50,50,50,.5);
+    --glass-rim:inset 1px 1px 0 -.5px rgba(255,255,255,.4), inset 0 0 0 1px rgba(255,255,255,.15), 0 0 0 var(--hair) rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.4);
+  } }
+  @media (max-resolution: 1.5dppx) { :root { --hair:1px; } }
+
+  * { box-sizing:border-box; }
+  html { font-size:106.25%; -webkit-text-size-adjust:100%; } /* 1rem = 17px (Body), vẫn theo cỡ chữ trình duyệt */
+  body { margin:0; min-height:100vh; background:var(--bg); color:var(--label); font:400 1rem/1.294 var(--font); -webkit-font-smoothing:antialiased;
+    padding:max(24px,env(safe-area-inset-top)) max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left)); }
+  main { width:min(620px,100%); margin:0 auto; padding-bottom:max(16px,env(safe-area-inset-bottom)); }
+  h1 { margin:0 0 4px; font:700 2rem/1.206 var(--font); letter-spacing:.01em; }  /* Large Title 34/41 */
+  #who { margin:0 0 var(--gap); font:400 .882rem/1.333 var(--font); color:var(--label-2); }
+
+  /* Nhóm bo góc kiểu Settings (inset grouped) */
+  section { margin-bottom:var(--gap); }
+  .group { background:var(--bg-2); border-radius:var(--r-group); overflow:hidden; margin:0 0 var(--gap); }
+  section .group { margin:0; }
+  .hdr { display:block; margin:0 16px 8px; font:600 1rem/1.294 var(--font); color:var(--label-2); }
+  .ftr { margin:8px 16px 0; font:400 .765rem/1.385 var(--font); color:var(--label-2); }
+
+  textarea, input { display:block; width:100%; margin:0; border:0; border-radius:0; background:transparent; color:var(--label);
+    font:inherit; padding:15px 16px; min-height:var(--row-h); outline:0; -webkit-appearance:none; appearance:none; }
+  textarea { min-height:112px; max-height:40vh; resize:none; field-sizing:content; }
+  ::placeholder { color:var(--placeholder); opacity:1; }
+  section .group:focus-within { outline:3px solid var(--blue); outline-offset:2px; }
+
+  /* Mục mở rộng với mũi tên kiểu iOS */
+  summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:8px; -webkit-tap-highlight-color:transparent; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:""; width:7px; height:7px; margin-left:auto; border:solid var(--gray); border-width:2px 2px 0 0; rotate:45deg; transition:rotate .2s; }
+  details[open] > summary::after { rotate:135deg; }
+  summary:focus-visible { outline:3px solid var(--blue); outline-offset:-3px; border-radius:inherit; }
+  .guide > summary { min-height:var(--row-h); padding:0 16px; color:var(--tint-text); }
+  .guide > summary:active { background:var(--press); }
+  .guide-body { margin-left:16px; border-top:var(--hair) solid var(--sep); padding:12px 16px 16px 0; font:400 .882rem/1.333 var(--font); }
+  .guide-body ol, .guide-body ul { margin:6px 0 10px; padding-left:20px; }
+
+  /* Nhật ký dạng danh sách, mới nhất ở trên */
+  #log:empty { display:none; }
+  .row { position:relative; display:grid; grid-template-columns:22px 1fr; gap:12px; align-items:start; min-height:var(--row-h); padding:15px 16px; overflow-wrap:anywhere; }
+  .row + .row::before { content:""; position:absolute; top:0; left:50px; right:16px; border-top:var(--hair) solid var(--sep); }
+  .bd { min-width:0; }
+  .bd a { color:var(--tint-text); font-weight:600; text-decoration:none; }
+  .m { display:block; margin-top:2px; font:400 .882rem/1.333 var(--font); color:var(--label-2); }
+  .src { display:block; margin-top:2px; font:400 .765rem/1.385 var(--font); color:var(--label-2); }
+  .ico { display:block; width:22px; height:22px; }
+  .i-ok { color:var(--green); } .i-err { color:var(--red); } .i-spin { color:var(--gray); animation:spin .8s steps(8) infinite; }
+  @keyframes spin { to { rotate:360deg; } }
+  .fails { margin-top:2px; font:400 .765rem/1.385 var(--font); color:var(--label-2); }
+  .fails > summary { color:var(--label); font-weight:600; min-height:44px; }
+  .fails > summary::after { margin-left:2px; width:6px; height:6px; }
+
+  /* Bề mặt Liquid Glass duy nhất: thanh nổi chứa nút chính (HIG: kính chỉ cho lớp điều khiển, không cho nội dung) */
+  .bar { position:sticky; bottom:max(12px,env(safe-area-inset-bottom)); z-index:1; padding:6px; border-radius:999px; background:var(--glass);
+    -webkit-backdrop-filter:saturate(180%) blur(16px); backdrop-filter:saturate(180%) blur(16px); box-shadow:var(--glass-rim); }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:48px; padding:0 20px; border:0; border-radius:999px;
+    background:var(--tint-fill); color:#fff; font:600 1rem/1.294 var(--font); cursor:pointer;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.15); transition:transform .15s, filter .15s; -webkit-tap-highlight-color:transparent; }
+  @media (hover:hover) { .btn:hover:not(:disabled) { filter:brightness(1.06); } }
+  .btn:active:not(:disabled) { transform:scale(.97); filter:brightness(1.12); }
+  .btn:disabled { background:var(--fill); color:var(--label-2); box-shadow:none; cursor:default; }
+  .btn .ico { width:18px; height:18px; color:inherit; }
+  .btn:focus-visible { outline:3px solid var(--blue); outline-offset:3px; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+
+  /* Trợ năng: giảm trong suốt / tăng tương phản / giảm chuyển động / chế độ tương phản cao Windows */
+  @media (prefers-reduced-transparency: reduce) { .bar { background:var(--bg-2); -webkit-backdrop-filter:none; backdrop-filter:none; } }
+  @media (prefers-contrast: more) {
+    :root { --sep:var(--sep-opaque); --label-2:var(--label); }
+    .group { box-shadow:inset 0 0 0 1px var(--sep-opaque); }
+    .bar { background:var(--bg-2); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 0 0 1px var(--label); }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } .btn:active:not(:disabled) { transform:none; } }
+  @media (forced-colors: active) { .btn, .bar, .group { border:1px solid CanvasText; } .ico path { stroke:Canvas; } }
 </style>
 </head>
 <body>
 <main>
   <h1>Drive Clone</h1>
   <p id="who">Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.</p>
-  <details class="guide">
+  <details class="group guide">
     <summary>Hướng dẫn sử dụng</summary>
-    <ol>
-      <li>Dán link tệp/thư mục được chia sẻ (mỗi dòng một link).</li>
-      <li>Tuỳ chọn: dán link thư mục đích trong Drive của bạn.</li>
-      <li>Bấm <b>Clone</b>, chờ đến khi hiện ✅ rồi bấm vào tên để mở bản copy.</li>
-    </ol>
-    App kiểm tra trước khi copy: tệp/thư mục cùng tên đã có ở đích sẽ được bỏ qua. Copy bị dừng giữa chừng? Chạy lại đúng link + thư mục đích cũ, app chỉ copy phần còn thiếu.<br>
-    <b>Khi nào nên dùng app?</b>
-    <ul>
-      <li>Chỉ copy 1 tệp hoặc vài tệp lẻ: không cần app, mở link → <b>⋮ → Tạo bản sao</b>.</li>
-      <li>Copy <b>cả thư mục</b> (kèm thư mục con), vào <b>thư mục đích</b> chọn sẵn, hoặc <b>nhiều link</b> một lần: dùng app.</li>
-    </ul>
-    <b>Lưu ý:</b> bạn phải xem được link, và chủ sở hữu không tắt quyền sao chép. Bản copy tính vào dung lượng Drive của bạn.
+    <div class="guide-body">
+      <ol>
+        <li>Dán link tệp/thư mục được chia sẻ (mỗi dòng một link).</li>
+        <li>Tuỳ chọn: dán link thư mục đích trong Drive của bạn.</li>
+        <li>Bấm <b>Clone</b>, chờ đến khi hiện dấu tích xanh rồi bấm vào tên để mở bản copy.</li>
+      </ol>
+      App kiểm tra trước khi copy: tệp/thư mục cùng tên đã có ở đích sẽ được bỏ qua. Copy bị dừng giữa chừng? Chạy lại đúng link + thư mục đích cũ, app chỉ copy phần còn thiếu.<br>
+      <b>Khi nào nên dùng app?</b>
+      <ul>
+        <li>Chỉ copy 1 tệp hoặc vài tệp lẻ: không cần app, mở link → <b>⋮ → Tạo bản sao</b>.</li>
+        <li>Copy <b>cả thư mục</b> (kèm thư mục con), vào <b>thư mục đích</b> chọn sẵn, hoặc <b>nhiều link</b> một lần: dùng app.</li>
+      </ul>
+      <b>Lưu ý:</b> bạn phải xem được link, và chủ sở hữu không tắt quyền sao chép. Bản copy tính vào dung lượng Drive của bạn.
+    </div>
   </details>
   <form id="f">
-    <label for="src">Link được chia sẻ</label>
-    <textarea id="src" required placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…&#10;(mỗi dòng một link)"></textarea>
-    <label for="dst">Link thư mục đích <small>(tuỳ chọn – để trống sẽ lưu vào My Drive)</small></label>
-    <input id="dst" placeholder="https://drive.google.com/drive/folders/…">
-    <button id="go">Clone</button>
+    <section>
+      <label class="hdr" for="src">Link được chia sẻ</label>
+      <div class="group"><textarea id="src" required inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"
+        placeholder="https://drive.google.com/file/d/…&#10;https://drive.google.com/drive/folders/…"></textarea></div>
+      <p class="ftr">Mỗi dòng một link.</p>
+    </section>
+    <section>
+      <label class="hdr" for="dst">Thư mục đích</label>
+      <div class="group"><input id="dst" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://drive.google.com/drive/folders/…"></div>
+      <p class="ftr">Tuỳ chọn – để trống sẽ lưu vào My Drive.</p>
+    </section>
   </form>
-  <div id="log" aria-live="polite"></div>
+  <div id="log" class="group"></div>
+  <p id="sr" class="sr" aria-live="polite"></p>
+  <div class="bar"><button id="go" class="btn" form="f">Clone</button></div>
 </main>
 <script>
 'use strict';
@@ -63,38 +145,54 @@ const run = (fn, ...a) => new Promise((ok, fail) => google.script.run.withSucces
 run('me').then((email) => { $('#who').textContent = `Copy tệp hoặc thư mục được chia sẻ vào Google Drive của ${email}.`; })
   .catch((e) => { $('#who').textContent = e.message; $('#go').disabled = true; });
 
-function row() { const d = document.createElement('div'); d.className = 'row'; $('#log').prepend(d); return d; }
+// Biểu tượng kiểu SF Symbols: checkmark.circle.fill, xmark.circle.fill, vòng xoay chờ
+const SVG = (c, b) => `<svg class="ico ${c}" viewBox="0 0 20 20" aria-hidden="true">${b}</svg>`;
+const MARK = 'fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+const ICON = {
+  ok: SVG('i-ok', `<circle cx="10" cy="10" r="10" fill="currentColor"/><path d="M6 10.4l2.7 2.7L14 7.6" ${MARK}/>`),
+  err: SVG('i-err', `<circle cx="10" cy="10" r="10" fill="currentColor"/><path d="M7 7l6 6M13 7l-6 6" ${MARK}/>`),
+  spin: SVG('i-spin', `<g stroke="currentColor" stroke-width="2" stroke-linecap="round">${[...Array(8)].map((_, i) =>
+    `<path d="M10 2.5v3.5" transform="rotate(${i * 45} 10 10)" opacity="${i ? .15 + i * .1 : 1}"/>`).join('')}</g>`),
+};
+const say = (t) => { $('#sr').textContent = t; }; // chỉ đọc cho trình đọc màn hình lúc bắt đầu/xong/lỗi
+function row() { const d = document.createElement('div'); d.className = 'row'; d.innerHTML = '<span></span><div class="bd"></div>'; $('#log').prepend(d); return d; }
+const setIcon = (el, s) => { if (el.dataset.st !== s) { el.firstChild.innerHTML = ICON[s]; el.dataset.st = s; } }; // không khởi động lại vòng xoay mỗi giây
 const clock = (ms) => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
 function show(el, link, job, t0) {
-  const failed = job.failed.length ? `<details><summary>${job.failed.length} tệp lỗi</summary>${job.failed.map(esc).join('<br>')}</details>` : '';
+  setIcon(el, job.done ? (job.failed.length ? 'err' : 'ok') : 'spin');
+  const open = el.querySelector('.fails[open]') ? ' open' : ''; // giữ danh sách lỗi đang mở qua mỗi lần cập nhật
+  const failed = job.failed.length ? `<details class="fails"${open}><summary>${job.failed.length} tệp lỗi</summary><div>${job.failed.map(esc).join('<br>')}</div></details>` : '';
   const left = job.done ? '' : ` · còn ${job.queue.length} thư mục`;
-  const last = !job.done && job.last ? `<br><small>Vừa copy: ${esc(job.last)}</small>` : '';
+  const last = !job.done && job.last ? `<span class="m">Vừa copy: ${esc(job.last)}</span>` : '';
   const skipped = job.skipped ? `, bỏ qua ${job.skipped} tệp đã có` : '';
-  el.innerHTML = `${job.done ? '✅' : '⏳'} <a href="${esc(job.url)}">${esc(job.name)}</a> — ${job.done ? 'xong' : 'đang copy'}, ${job.copied} tệp mới${skipped}${left} · ${clock(Date.now() - t0)}${last}${failed}<br><small>${esc(link)}</small>`;
+  el.lastChild.innerHTML = `<a href="${esc(job.url)}">${esc(job.name)}</a><span class="m">${job.done ? 'Xong' : 'Đang copy'}, ${job.copied} tệp mới${skipped}${left} · ${clock(Date.now() - t0)}</span>${last}${failed}<span class="src">${esc(link)}</span>`;
 }
 
 $('#f').onsubmit = async (e) => {
   e.preventDefault();
   const links = $('#src').value.split(/\s+/).filter(Boolean);
   const dest = $('#dst').value.trim();
-  $('#go').disabled = true;
+  const go = $('#go');
+  go.disabled = true; go.innerHTML = ICON.spin + 'Đang copy…';
   for (const link of links) {
-    const el = row(); el.textContent = `⏳ Đang mở ${link}`;
+    const el = row(); setIcon(el, 'spin'); el.lastChild.innerHTML = `Đang mở…<span class="src">${esc(link)}</span>`;
     const t0 = Date.now();
     let job, tick;
     try {
       job = await run('cloneStart', link, dest);
+      say(`Đang copy ${job.name}`);
       show(el, link, job, t0);
       tick = setInterval(() => show(el, link, job, t0), 1000); // đồng hồ chạy cả khi đang chờ máy chủ
       while (!job.done) { job = await run('cloneStep', job); show(el, link, job, t0); }
-      el.classList.add(job.failed.length ? 'err' : 'ok');
+      say(`Xong ${job.name}: ${job.copied} tệp mới${job.failed.length ? `, ${job.failed.length} tệp lỗi` : ''}`);
     } catch (err) {
-      el.className = 'row err'; el.innerHTML = `❌ ${esc(err.message)}<br><small>${esc(link)}</small>`;
+      setIcon(el, 'err'); el.lastChild.innerHTML = `${esc(err.message)}<span class="src">${esc(link)}</span>`;
+      say(`Lỗi: ${err.message}`);
     } finally {
       clearInterval(tick);
     }
   }
-  $('#go').disabled = false;
+  go.disabled = false; go.textContent = 'Clone';
 };
 </script>
 </body>
