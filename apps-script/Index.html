@@ -63,9 +63,12 @@ run('me').then((email) => { $('#who').textContent = `Copy tệp hoặc thư mụ
   .catch((e) => { $('#who').textContent = e.message; $('#go').disabled = true; });
 
 function row() { const d = document.createElement('div'); d.className = 'row'; $('#log').prepend(d); return d; }
-function show(el, link, job) {
+const clock = (ms) => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+function show(el, link, job, t0) {
   const failed = job.failed.length ? `<details><summary>${job.failed.length} tệp lỗi</summary>${job.failed.map(esc).join('<br>')}</details>` : '';
-  el.innerHTML = `${job.done ? '✅' : '⏳'} <a href="${esc(job.url)}">${esc(job.name)}</a> — ${job.done ? 'xong' : 'đang copy'}, ${job.copied} tệp${failed}<br><small>${esc(link)}</small>`;
+  const left = job.done ? '' : ` · còn ${job.queue.length} thư mục`;
+  const last = !job.done && job.last ? `<br><small>Vừa copy: ${esc(job.last)}</small>` : '';
+  el.innerHTML = `${job.done ? '✅' : '⏳'} <a href="${esc(job.url)}">${esc(job.name)}</a> — ${job.done ? 'xong' : 'đang copy'}, ${job.copied} tệp${left} · ${clock(Date.now() - t0)}${last}${failed}<br><small>${esc(link)}</small>`;
 }
 
 $('#f').onsubmit = async (e) => {
@@ -75,13 +78,18 @@ $('#f').onsubmit = async (e) => {
   $('#go').disabled = true;
   for (const link of links) {
     const el = row(); el.textContent = `⏳ Đang mở ${link}`;
+    const t0 = Date.now();
+    let job, tick;
     try {
-      let job = await run('cloneStart', link, dest);
-      show(el, link, job);
-      while (!job.done) { job = await run('cloneStep', job); show(el, link, job); }
+      job = await run('cloneStart', link, dest);
+      show(el, link, job, t0);
+      tick = setInterval(() => show(el, link, job, t0), 1000); // đồng hồ chạy cả khi đang chờ máy chủ
+      while (!job.done) { job = await run('cloneStep', job); show(el, link, job, t0); }
       el.classList.add(job.failed.length ? 'err' : 'ok');
     } catch (err) {
       el.className = 'row err'; el.innerHTML = `❌ ${esc(err.message)}<br><small>${esc(link)}</small>`;
+    } finally {
+      clearInterval(tick);
     }
   }
   $('#go').disabled = false;

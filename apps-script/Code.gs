@@ -2,7 +2,8 @@
  * Drive Clone – copy tệp/thư mục được chia sẻ trên Google Drive vào Drive của bạn.
  * Deploy dạng Web app với "Execute as: User accessing the web app".
  */
-const TIME_BUDGET_MS = 4.5 * 60 * 1000; // Apps Script giới hạn 6 phút/lần chạy; phần còn lại sẽ chạy tiếp ở lần gọi sau
+// Mỗi lần gọi chạy tối đa ~20 giây rồi trả về để giao diện cập nhật tiến độ (giới hạn cứng của Apps Script là 6 phút/lần).
+const TIME_BUDGET_MS = 20 * 1000;
 
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('Index')
@@ -89,6 +90,7 @@ function cloneStep(job) {
         if (f.getMimeType() === MimeType.SHORTCUT) f = DriveApp.getFileById(f.getTargetId());
         f.makeCopy(f.getName(), dstFolder);
         job.copied++;
+        job.last = f.getName();
       } catch (e) {
         if (job.failed.length < 100) job.failed.push(`${f.getName()}: ${e.message}`);
       }
