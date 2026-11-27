@@ -142,12 +142,40 @@ textarea,input{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgb(
   <header class="top">
     <div class="brand">
       <div class="brand-row">
-        <svg class="brand-logo" viewBox="0 0 32 32" aria-hidden="true">
-          <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#33a3ff"/><stop offset="1" stop-color="#0052d9"/></linearGradient></defs>
-          <rect x="5" y="4" width="15" height="18" rx="4" fill="#7ec3ff" fill-opacity=".35" stroke="#8ec8ff" stroke-width="1.2"/>
-          <rect x="11" y="10" width="16" height="19" rx="4.5" fill="#fff" fill-opacity=".7" stroke="url(#lg)" stroke-width="1.4"/>
-          <path d="M19 15.5v8M15 19.5h8" stroke="url(#lg)" stroke-width="2.6" stroke-linecap="round"/>
-        </svg>
+        <svg class="brand-logo" viewBox="76 76 360 360" fill="none" aria-hidden="true"><defs>
+        <filter id="blsh" x="-25%" y="-25%" width="150%" height="150%">
+        <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#14326e" flood-opacity=".18"/>
+        <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#007aff" flood-opacity=".12"/>
+        </filter>
+        <filter id="blglow" x="-40%" y="-40%" width="180%" height="180%">
+        <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#0055d4" flood-opacity=".38"/>
+        </filter>
+        <linearGradient id="blbody" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity=".62"/><stop offset=".35" stop-color="#d8ebff" stop-opacity=".3"/>
+        <stop offset=".72" stop-color="#b8d9ff" stop-opacity=".2"/><stop offset="1" stop-color="#ebd6ff" stop-opacity=".36"/>
+        </linearGradient>
+        <linearGradient id="blsheen" x1="0" y1="0" x2=".7" y2=".8">
+        <stop offset="0" stop-color="#fff" stop-opacity=".62"/><stop offset=".42" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#7ec3ff" stop-opacity=".06"/>
+        </linearGradient>
+        <linearGradient id="blrim" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".28" stop-color="#8ec8ff" stop-opacity=".92"/>
+        <stop offset=".65" stop-color="#5ca8ff" stop-opacity=".82"/><stop offset="1" stop-color="#fff" stop-opacity=".95"/>
+        </linearGradient>
+        <linearGradient id="blrim2" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#66b0ff" stop-opacity=".5"/><stop offset=".5" stop-color="#c6a8ff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity=".85"/>
+        </linearGradient>
+        <linearGradient id="blsap" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0052d9"/><stop offset=".5" stop-color="#0a84ff"/><stop offset="1" stop-color="#33a3ff"/>
+        </linearGradient>
+        <linearGradient id="blsapspec" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".5" stop-color="#b5e3ff" stop-opacity=".4"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/>
+        </linearGradient></defs>
+        <g filter="url(#blsh)"><path d="M96 182Q96 150 128 150H210Q226 150 236 162L254 186H384Q416 186 416 218V370Q416 402 384 402H128Q96 402 96 370Z" fill="url(#blbody)"/></g>
+        <path d="M96 182Q96 150 128 150H210Q226 150 236 162L254 186H384Q416 186 416 218V370Q416 402 384 402H128Q96 402 96 370Z" fill="url(#blsheen)"/>
+        <path d="M96 182Q96 150 128 150H210Q226 150 236 162L254 186H384Q416 186 416 218V370Q416 402 384 402H128Q96 402 96 370Z" fill="none" stroke="url(#blrim)" stroke-width="7" stroke-linejoin="round"/>
+        <path d="M96 182Q96 150 128 150H210Q226 150 236 162L254 186H384Q416 186 416 218V370Q416 402 384 402H128Q96 402 96 370Z" fill="none" stroke="url(#blrim2)" stroke-width="2" stroke-linejoin="round" transform="translate(256 256) scale(.965) translate(-256 -256)"/>
+        <g filter="url(#blglow)"><path d="M256 228V338M212 296L256 340L300 296" fill="none" stroke="url(#blsap)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <path d="M256 228V338M212 296L256 340L300 296" fill="none" stroke="url(#blsapspec)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".85" transform="translate(-2 -3)"/></svg>
         <h1>Drive Clone</h1>
       </div>
       <div class="sub" id="who">Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.</div>
