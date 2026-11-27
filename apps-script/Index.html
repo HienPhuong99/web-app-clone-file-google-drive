@@ -37,6 +37,7 @@
       <li>Tuỳ chọn: dán link thư mục đích trong Drive của bạn.</li>
       <li>Bấm <b>Clone</b>, chờ đến khi hiện ✅ rồi bấm vào tên để mở bản copy.</li>
     </ol>
+    App kiểm tra trước khi copy: tệp/thư mục cùng tên đã có ở đích sẽ được bỏ qua. Copy bị dừng giữa chừng? Chạy lại đúng link + thư mục đích cũ, app chỉ copy phần còn thiếu.<br>
     <b>Khi nào nên dùng app?</b>
     <ul>
       <li>Chỉ copy 1 tệp hoặc vài tệp lẻ: không cần app, mở link → <b>⋮ → Tạo bản sao</b>.</li>
@@ -68,7 +69,8 @@ function show(el, link, job, t0) {
   const failed = job.failed.length ? `<details><summary>${job.failed.length} tệp lỗi</summary>${job.failed.map(esc).join('<br>')}</details>` : '';
   const left = job.done ? '' : ` · còn ${job.queue.length} thư mục`;
   const last = !job.done && job.last ? `<br><small>Vừa copy: ${esc(job.last)}</small>` : '';
-  el.innerHTML = `${job.done ? '✅' : '⏳'} <a href="${esc(job.url)}">${esc(job.name)}</a> — ${job.done ? 'xong' : 'đang copy'}, ${job.copied} tệp${left} · ${clock(Date.now() - t0)}${last}${failed}<br><small>${esc(link)}</small>`;
+  const skipped = job.skipped ? `, bỏ qua ${job.skipped} tệp đã có` : '';
+  el.innerHTML = `${job.done ? '✅' : '⏳'} <a href="${esc(job.url)}">${esc(job.name)}</a> — ${job.done ? 'xong' : 'đang copy'}, ${job.copied} tệp mới${skipped}${left} · ${clock(Date.now() - t0)}${last}${failed}<br><small>${esc(link)}</small>`;
 }
 
 $('#f').onsubmit = async (e) => {

@@ -21,6 +21,7 @@ dán link được share → (tuỳ chọn) dán link thư mục đích → bấ
 
 - Hỗ trợ tệp, Google Docs/Sheets/Slides, shortcut, và **cả thư mục** (copy đệ quy, tự chạy tiếp khi vượt giới hạn 6 phút của Apps Script).
 - Nhiều link cùng lúc (mỗi dòng một link).
+- Kiểm tra trước khi copy: thư mục/tệp cùng tên đã có ở đích được dùng lại/bỏ qua, nên chạy lại cùng link + cùng thư mục đích sẽ chỉ copy phần còn thiếu.
 - Không cần server, không cần thẻ thanh toán. Mỗi người dùng copy vào Drive của chính họ.
 
 ## Deploy (~2 phút, miễn phí)

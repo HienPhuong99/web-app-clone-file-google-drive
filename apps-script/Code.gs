@@ -41,6 +41,22 @@ function open_(id) {
   }
 }
 
+const q_ = (s) => String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+/** Dùng lại thư mục con cùng tên nếu đã có (để chạy tiếp lần copy dở), chưa có thì tạo. */
+function subfolder_(parent, name) {
+  const it = parent.searchFolders(`title = '${q_(name)}' and trashed = false`);
+  return it.hasNext() ? it.next() : parent.createFolder(name);
+}
+
+/** Đếm tệp đã có trong thư mục đích theo tên: {tên: số lượng} – tệp trùng tên sẽ được bỏ qua. */
+function have_(folder) {
+  const m = {};
+  const it = folder.searchFiles('trashed = false');
+  while (it.hasNext()) { const n = it.next().getName(); m[n] = (m[n] || 0) + 1; }
+  return m;
+}
+
 function me() {
   guard_();
   return Session.getActiveUser().getEmail();
@@ -55,15 +71,20 @@ function cloneStart(source, dest) {
   const src = open_(parseId_(source));
   const dst = String(dest || '').trim() ? DriveApp.getFolderById(parseId_(dest)) : DriveApp.getRootFolder();
   if (src.type === 'file') {
+    const name = src.item.getName();
+    const existing = dst.searchFiles(`title = '${q_(name)}' and trashed = false`);
+    if (existing.hasNext()) {
+      return { done: true, copied: 0, skipped: 1, failed: [], url: existing.next().getUrl(), name: name };
+    }
     try {
-      const copy = src.item.makeCopy(src.item.getName(), dst);
-      return { done: true, copied: 1, failed: [], url: copy.getUrl(), name: copy.getName() };
+      const copy = src.item.makeCopy(name, dst);
+      return { done: true, copied: 1, skipped: 0, failed: [], url: copy.getUrl(), name: copy.getName() };
     } catch (e) {
-      throw new Error(`Không copy được "${src.item.getName()}": ${e.message} (chủ sở hữu có thể đã tắt quyền tải xuống/sao chép).`);
+      throw new Error(`Không copy được "${name}": ${e.message} (chủ sở hữu có thể đã tắt quyền tải xuống/sao chép).`);
     }
   }
-  const root = dst.createFolder(src.item.getName());
-  return { done: false, copied: 0, failed: [], url: root.getUrl(), name: root.getName(), queue: [{ src: src.item.getId(), dst: root.getId(), token: null, subDone: false }] };
+  const root = subfolder_(dst, src.item.getName());
+  return { done: false, copied: 0, skipped: 0, failed: [], url: root.getUrl(), name: root.getName(), queue: [{ src: src.item.getId(), dst: root.getId(), token: null, subDone: false }] };
 }
 
 /** Copy tiếp các tệp của thư mục cho đến khi hết giờ hoặc xong. */
@@ -78,8 +99,9 @@ function cloneStep(job) {
       const subs = DriveApp.getFolderById(task.src).getFolders();
       while (subs.hasNext()) {
         const sub = subs.next();
-        job.queue.push({ src: sub.getId(), dst: dstFolder.createFolder(sub.getName()).getId(), token: null, subDone: false });
+        job.queue.push({ src: sub.getId(), dst: subfolder_(dstFolder, sub.getName()).getId(), token: null, subDone: false });
       }
+      task.have = have_(dstFolder);
       task.subDone = true;
     }
     const files = task.token ? DriveApp.continueFileIterator(task.token) : DriveApp.getFolderById(task.src).getFiles();
@@ -88,9 +110,11 @@ function cloneStep(job) {
       let f = files.next();
       try {
         if (f.getMimeType() === MimeType.SHORTCUT) f = DriveApp.getFileById(f.getTargetId());
-        f.makeCopy(f.getName(), dstFolder);
+        const name = f.getName();
+        if (task.have[name]) { task.have[name]--; job.skipped++; continue; } // đã có ở đích → bỏ qua
+        f.makeCopy(name, dstFolder);
         job.copied++;
-        job.last = f.getName();
+        job.last = name;
       } catch (e) {
         if (job.failed.length < 100) job.failed.push(`${f.getName()}: ${e.message}`);
       }
