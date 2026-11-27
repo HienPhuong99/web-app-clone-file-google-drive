@@ -145,6 +145,12 @@ const run = (fn, ...a) => new Promise((ok, fail) => google.script.run.withSucces
 run('me').then((email) => { $('#who').textContent = `Copy tệp hoặc thư mục được chia sẻ vào Google Drive của ${email}.`; })
   .catch((e) => { $('#who').textContent = e.message; $('#go').disabled = true; });
 
+// Điền sẵn từ ?src=…&dst=… (Phím tắt trên iPhone). Không tự chạy: người dùng vẫn bấm Clone.
+google.script.url.getLocation((l) => {
+  if (l.parameters.src) $('#src').value = l.parameters.src.join('\n');
+  if (l.parameter.dst) $('#dst').value = l.parameter.dst;
+});
+
 // Biểu tượng kiểu SF Symbols: checkmark.circle.fill, xmark.circle.fill, vòng xoay chờ
 const SVG = (c, b) => `<svg class="ico ${c}" viewBox="0 0 20 20" aria-hidden="true">${b}</svg>`;
 const MARK = 'fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';

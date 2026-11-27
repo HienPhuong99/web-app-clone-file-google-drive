@@ -8,6 +8,7 @@ const TIME_BUDGET_MS = 20 * 1000;
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Drive Clone')
+    .setFaviconUrl('https://raw.githubusercontent.com/HienPhuong99/web-app-clone-file-google-drive/claude/cool-cannon-ken5nn/assets/icon-180.png')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 

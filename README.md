@@ -24,6 +24,19 @@ dán link được share → (tuỳ chọn) dán link thư mục đích → bấ
 - Kiểm tra trước khi copy: thư mục/tệp cùng tên đã có ở đích được dùng lại/bỏ qua, nên chạy lại cùng link + cùng thư mục đích sẽ chỉ copy phần còn thiếu.
 - Không cần server, không cần thẻ thanh toán. Mỗi người dùng copy vào Drive của chính họ.
 
+## Dùng trên iPhone (Phím tắt)
+App tự điền link khi mở bằng `…/exec?src=<link đã mã hoá>` (thêm `&dst=<link thư mục đích>` nếu muốn); bạn chỉ cần bấm **Clone**.
+Tạo một lần trong app **Phím tắt** (khoảng 2 phút):
+1. **＋** → đặt tên `Drive Clone` → **ⓘ Chi tiết** → bật **Trong Bảng chia sẻ** → **Xong**.
+2. Ở dòng nhận đầu vào trên cùng: chỉ chọn **URL** và **Văn bản**; mục *nếu không có đầu vào* chọn **Lấy bảng tạm**.
+3. Thêm tác vụ **Lấy URL từ đầu vào** → **Mã hoá URL** (chế độ *Mã hoá*) → **URL** với nội dung
+   `https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec?src=` rồi chèn biến *URL đã mã hoá* ở cuối → **Mở URL**.
+   (Dùng link gốc `script.google.com`, không dùng tinyurl. Muốn mở bằng Chrome: thay `https://` bằng `googlechromes://`.)
+4. Tuỳ chọn: **Chi tiết → Thêm vào Màn hình chính**, chọn ảnh [icon](assets/icon-512.png) làm biểu tượng.
+
+Cách dùng: trong Safari bấm **Chia sẻ → Drive Clone**; trong app Google Drive bấm **Sao chép đường liên kết** rồi chạm biểu tượng Drive Clone (phím tắt tự lấy link từ bảng tạm).
+Không nên dùng Safari *Thêm vào MH chính* với **Mở dưới dạng ứng dụng web** bật: chế độ đó có cookie riêng nên hay bị lỗi đăng nhập Google. Đăng nhập nhiều tài khoản Google cùng lúc có thể làm Apps Script lỗi → dùng 1 tài khoản hoặc tab riêng tư.
+
 ## Deploy (~2 phút, miễn phí)
 1. Mở <https://script.google.com> → **New project**.
 2. Dán nội dung [`apps-script/Code.gs`](apps-script/Code.gs) vào tệp `Code.gs` (xoá nội dung mẫu).
