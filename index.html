@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drive Clone</title>
+<meta name="description" content="Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.">
+<link rel="icon" href="assets/icon-180.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta property="og:title" content="Drive Clone">
+<meta property="og:description" content="Copy tệp hoặc thư mục được chia sẻ vào Google Drive của bạn.">
+<meta property="og:image" content="https://hienphuong99.github.io/web-app-clone-file-google-drive/assets/icon-512.png">
+<script>
+  // Chuyển sang web app Apps Script, giữ nguyên ?src=…&dst=… (dùng cho Phím tắt iPhone).
+  const APP = 'https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec';
+  location.replace(APP + location.search + location.hash);
+</script>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;font:16px -apple-system,system-ui,sans-serif;color:#1c1c1e;
+    background:radial-gradient(40% 40% at 10% 60%,#7ec3ff88,transparent),radial-gradient(40% 40% at 90% 40%,#ffb3c688,transparent),radial-gradient(45% 45% at 80% 95%,#9eeed388,transparent),#e8edf6}
+  a{color:#0057d1;font-weight:600}
+  @media (prefers-color-scheme:dark){body{color:#f2f2f7;background:#0b0d14}a{color:#a9d4ff}}
+</style>
+</head>
+<body>
+<p>Đang mở Drive Clone… <a id="go" href="https://script.google.com/macros/s/AKfycbxy4A09uQ-kycGGfKQIlbmmvGTR3Fp7QSxKsYgImAwFvDNiM3mqBUDJIunLEE6WnFXeGA/exec">Bấm vào đây nếu không tự mở</a></p>
+<script>document.getElementById('go').href = APP + location.search + location.hash</script>
+</body>
+</html>
